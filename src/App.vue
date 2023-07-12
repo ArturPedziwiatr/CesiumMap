@@ -1,30 +1,60 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted, ref } from 'vue'
+import { Ion, Cartesian3 } from 'cesium'
+import { InversifyEnums } from '@Enum/inversify'
+import { container } from '@Script/event/Inversify'
+import { bootstap } from '@Script/bootstrap/bootstrap'
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import Sidebar from '@/toolbar/Sidebar.vue'
+
+library.add(fas);
+Ion.defaultAccessToken = __CESIUM_TOKEN__
+const coords = ref({ lon: 0, lat: 0 })
+
+onMounted(() => {
+  bootstap()
+  navigator.geolocation.getCurrentPosition(
+    (position: GeolocationPosition) => {
+      coords.value.lon = position.coords.longitude
+      coords.value.lat = position.coords.latitude
+      cesium()
+    },
+    () => alert('Cannot find your location'),
+    {
+      enableHighAccuracy: true,
+    }
+  )
+})
+
+function cesium() {
+  container.get(InversifyEnums.Cesium.Viewer).scene.camera.setView({
+    destination: Cartesian3.fromDegrees(
+      coords.value.lon,
+      coords.value.lat,
+      600
+    ),
+  })
+  container.get(InversifyEnums.Cesium.CesiumLayers)
+  // container.get(InversifyEnums.Cesium.CesiumMenu)
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container">
+    <div id="cesiumMap" class="container--map"></div>
+    <Sidebar />
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+<style scoped lang="scss">
+.container {
+  &--map{
+    position: fixed;
+    right: 0;
+    width: calc(100% - $sidebar-width-collapsed);
+    height: 100vh;
+    background: $body-color;
+  }
 }
 </style>
