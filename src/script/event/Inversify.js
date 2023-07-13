@@ -1,22 +1,17 @@
-class Inversify {
+import { ref } from 'vue'
+
+export class Inversify {
   constructor() {
     this.classBox = {}
   }
 
   bind(className) {
     this.to = function (classToInject) {
-      if (!this.classBox[className]) 
+      if (!this.classBox[className])
         this.classBox[className] = {
           classToInject,
           instance: null,
-          withArgs: false,
-          args: null
         }
-      this.withArgs = function (...args) {
-        this.classBox[className].withArgs = true
-        this.classBox[className].args = args
-      }
-      return this
     }
 
     this.toValue = function (classToInject) {
@@ -43,4 +38,4 @@ class Inversify {
   }
 }
 
-export const container = new Inversify()
+export const container = ref(new Inversify())

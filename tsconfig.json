@@ -20,6 +20,8 @@
       "@/*": ["./src/components/*"],
       "@Script/*": ["./src/script/*"],
       "@Enum/*": ["./src/enums/*"],
+      "@Func/*": ["./src/composables/*"],
+      "@Global/*": ["./src/global/global"],
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

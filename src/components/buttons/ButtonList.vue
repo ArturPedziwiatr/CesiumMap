@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import _ from 'lodash'
+const id = _.uniqueId()
 defineProps({
   icon: {
     type: String,
@@ -10,22 +11,13 @@ defineProps({
     required: true,
   },
 })
-
-const active = ref(false)
-const btnList = ref<HTMLElement>()
-const action = () => {
-  active.value
-    ? btnList.value?.classList.remove('expand')
-    : btnList.value?.classList.add('expand')
-  active.value = !active.value
-}
 </script>
 
 <template>
   <div class="wrapper">
     <div class="collapsible">
-      <input type="checkbox" id="collapsible-head" />
-      <label for="collapsible-head">
+      <input type="checkbox" :id="`collapsible-${id}`" />
+      <label :for="`collapsible-${id}`">
         <Icon :icon="['fas', icon]" />
         <p>{{ text }}</p>
       </label>
@@ -39,10 +31,8 @@ const action = () => {
 <style scoped lang="scss">
 .wrapper {
   display: flex;
-  padding-top: 0.8rem;
-
   & .collapsible {
-    max-width: 450px;
+    width: 100%;
     overflow: hidden;
     font-weight: 500;
 
@@ -63,6 +53,7 @@ const action = () => {
           max-height: 300px;
           opacity: 1;
           top: 0;
+          padding-left: 16px;
         }
 
         & + label {
@@ -73,14 +64,14 @@ const action = () => {
 
     & label {
       position: relative;
-      font-weight: 600;
+      font-weight: $weight-6;
       display: flex;
       align-items: center;
       color: $text-color;
       cursor: pointer;
-      padding: 15px 0;
       z-index: 1;
-      font-size: 20px;
+      padding: 0.5rem 0.4rem;
+      font-size: $sidebar-btn-menu-font;
       background: $sidebar-color;
 
       &:hover {
@@ -92,7 +83,7 @@ const action = () => {
       }
 
       & svg {
-        font-size: 24px;
+        font-size: $sidebar-icon-menu-font;
       }
     }
   }

@@ -1,55 +1,59 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { Ion, Cartesian3 } from 'cesium'
-import { InversifyEnums } from '@Enum/inversify'
-import { container } from '@Script/event/Inversify'
-import { bootstap } from '@Script/bootstrap/bootstrap'
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fas } from "@fortawesome/free-solid-svg-icons";
+import { onMounted, provide, ref } from 'vue'
+import { Ion, Cartesian3, Viewer, Terrain } from 'cesium'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
+import { MapsType } from '@Enum/MapType.ts'
+import global from '@Global'
 
-library.add(fas);
+library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
-const coords = ref({ lon: 0, lat: 0 })
+const viewerConstruct = ref(false)
 
 onMounted(() => {
-  bootstap()
+  const viewer = ref(new Viewer('cesiumMap', {
+    terrain: Terrain.fromWorldTerrain(),
+  }))
+  viewerConstruct.value = !viewerConstruct.value
   navigator.geolocation.getCurrentPosition(
     (position: GeolocationPosition) => {
-      coords.value.lon = position.coords.longitude
-      coords.value.lat = position.coords.latitude
+      global.value.coords.lon = position.coords.longitude
+      global.value.coords.lat = position.coords.latitude
       cesium()
     },
-    () => alert('Cannot find your location'),
+    () => cesium(),
     {
       enableHighAccuracy: true,
     }
   )
-})
 
-function cesium() {
-  container.get(InversifyEnums.Cesium.Viewer).scene.camera.setView({
-    destination: Cartesian3.fromDegrees(
-      coords.value.lon,
-      coords.value.lat,
-      600
-    ),
-  })
-  container.get(InversifyEnums.Cesium.CesiumLayers)
-  // container.get(InversifyEnums.Cesium.CesiumMenu)
-}
+  function cesium() {
+    viewer.value.scene.camera.setView({
+      destination: Cartesian3.fromDegrees(
+        global.value.coords.lon,
+        global.value.coords.lat,
+        600
+      ),
+    })
+  }
+  provide<Viewer>(
+    MapsType.Viewer,
+    viewer.value
+  )
+})
 </script>
 
 <template>
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
-    <Sidebar />
+    <Sidebar v-if="viewerConstruct" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .container {
-  &--map{
+  &--map {
     position: fixed;
     right: 0;
     width: calc(100% - $sidebar-width-collapsed);

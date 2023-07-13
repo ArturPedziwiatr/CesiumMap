@@ -18,6 +18,13 @@ $sidebar-width-collapsed: 40px;
 $sidebar-width-expanded: 250px;
 
 
+// ===== FontSize ===== \\
+$sidebar-icon-menu-font: 24px;
+$sidebar-btn-menu-font: 20px;
+
+// ===== FontWeight ===== \\
+$weight-6: 600;
+
 @media (prefers-color-scheme: light) {
   $color-toolbar: #213547;
 }

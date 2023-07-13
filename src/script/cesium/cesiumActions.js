@@ -6,9 +6,9 @@ import { Color, Cartesian3, SampledPositionProperty, JulianDate, ClassificationT
 export class CesiumActions {
   googleTileset
   constructor(
-    viewer = container.get(InversifyEnums.Cesium.Viewer),
-    createModel = container.get(InversifyEnums.Cesium.CreateModel),
-    layers = container.get(InversifyEnums.Cesium.CesiumLayers)
+    viewer = container.value.get(InversifyEnums.Cesium.Viewer),
+    createModel = container.value.get(InversifyEnums.Cesium.CreateModel),
+    layers = container.value.get(InversifyEnums.Cesium.CesiumLayers)
   ) {
     this.height = 1e2
     this.viewer = viewer

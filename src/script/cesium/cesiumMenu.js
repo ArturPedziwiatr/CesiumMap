@@ -3,9 +3,9 @@ import { InversifyEnums } from '../../enums/inversify'
 
 export class CesiumMenu {
   constructor(
-    viewer = container.get(InversifyEnums.Cesium.Viewer),
-    actions = container.get(InversifyEnums.Cesium.CesiumActions),
-    layers = container.get(InversifyEnums.Cesium.CesiumLayers),
+    viewer = container.value.get(InversifyEnums.Cesium.Viewer),
+    actions = container.value.get(InversifyEnums.Cesium.CesiumActions),
+    layers = container.value.get(InversifyEnums.Cesium.CesiumLayers)
   ) {
     this.viewer = viewer
     this.actions = actions
@@ -21,23 +21,22 @@ export class CesiumMenu {
 
   generateMenu() {
     const toolbar = document.getElementsByClassName('cesium-viewer-toolbar')[0]
-    const buttons = [].slice
-      .call(toolbar.children)
-      // .filter(
-      //   (elem) =>
-      //     elem.classList.value !==
-      //       'cesium-sceneModePicker-wrapper cesium-toolbar-button' &&
-      //     elem.classList.value !== 'cesium-button cesium-toolbar-button' &&
-      //     elem.classList.value !== 'cesium-baseLayerPicker-dropDown'
-      // )
+    const buttons = [].slice.call(toolbar.children)
+    // .filter(
+    //   (elem) =>
+    //     elem.classList.value !==
+    //       'cesium-sceneModePicker-wrapper cesium-toolbar-button' &&
+    //     elem.classList.value !== 'cesium-button cesium-toolbar-button' &&
+    //     elem.classList.value !== 'cesium-baseLayerPicker-dropDown'
+    // )
     toolbar.innerHTML = ''
-    buttons.forEach((elem) => toolbar.appendChild(elem))
+    buttons.forEach(elem => toolbar.appendChild(elem))
     toolbar.appendChild(document.getElementById('cutom-cesium-menu'))
   }
 
   addEvent() {
-    let administrativeUnits = false;
-    let eiker1965 = false;
+    let administrativeUnits = false
+    let eiker1965 = false
     document.getElementById('btn-pg').addEventListener('click', () => {
       this.viewer.trackedEntity = 'undifined'
       this.actions.importFlyingData()
@@ -67,7 +66,7 @@ export class CesiumMenu {
       this.layers.tryThis()
     })
 
-    document.getElementById('btn-eiker1965').addEventListener('click', (e) => {
+    document.getElementById('btn-eiker1965').addEventListener('click', e => {
       this.viewer.trackedEntity = 'undifined'
       eiker1965 = !eiker1965
       eiker1965
@@ -76,7 +75,7 @@ export class CesiumMenu {
       this.layers.eikerOld(eiker1965)
     })
 
-    document.getElementById('btn-xxq').addEventListener('click', (e) => {
+    document.getElementById('btn-xxq').addEventListener('click', e => {
       this.viewer.trackedEntity = 'undifined'
       administrativeUnits = !administrativeUnits
       administrativeUnits
@@ -88,7 +87,7 @@ export class CesiumMenu {
     this.tilesetToolbar.addEventListener('click', this.changeState)
   }
 
-  changeState = (e) => {
+  changeState = e => {
     const button = this.getType(e.target)
     if (this.btnGuard(button)) {
       this.clear()
@@ -104,14 +103,14 @@ export class CesiumMenu {
     this.osm.removeAttribute('active')
   }
 
-  getType = (node) =>
+  getType = node =>
     node && node.getAttribute('type')
       ? node.getAttribute('type')
       : node.parentElement
       ? this.getType(node.parentElement)
       : null
 
-  btnGuard = (btn) =>
+  btnGuard = btn =>
     btn &&
     btn.match(/^(off|google3d|osm)$/g) &&
     !this[btn].getAttribute('active')

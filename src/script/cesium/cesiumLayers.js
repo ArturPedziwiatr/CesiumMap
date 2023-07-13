@@ -24,7 +24,7 @@ export class CesiumLayers {
   weatherLayers
   administrativeUnitsLayers
   eiker1965
-  constructor(viewer = container.get(InversifyEnums.Cesium.Viewer)) {
+  constructor(viewer = container.value.get(InversifyEnums.Cesium.Viewer)) {
     this.viewer = viewer
     this.layers = viewer.imageryLayers
     this.primitives = viewer.scene.primitives
@@ -175,40 +175,39 @@ export class CesiumLayers {
   async tryThis(show = true) {
     try {
       function dataCallback(interval, index) {
-        let time;
+        let time
         if (index === 0) {
-          time = JulianDate.toIso8601(interval.stop);
+          time = JulianDate.toIso8601(interval.stop)
         } else {
-          time = JulianDate.toIso8601(interval.start);
+          time = JulianDate.toIso8601(interval.start)
         }
-      
+
         return {
           Time: time,
-        };
+        }
       }
-      
+
       const times = TimeIntervalCollection.fromIso8601({
-        iso8601: "2015-07-30/2017-06-16/P1D",
+        iso8601: '2015-07-30/2017-06-16/P1D',
         leadingInterval: true,
         trailingInterval: true,
         isStopIncluded: false, // We want stop time to be part of the trailing interval
         dataCallback: dataCallback,
-      });
-      
+      })
+
       const provider = new WebMapTileServiceImageryProvider({
-        url:
-          "https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg",
-        layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
-        style: "default",
-        tileMatrixSetID: "250m",
+        url: 'https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg',
+        layer: 'MODIS_Terra_CorrectedReflectance_TrueColor',
+        style: 'default',
+        tileMatrixSetID: '250m',
         maximumLevel: 5,
-        format: "image/jpeg",
+        format: 'image/jpeg',
         clock: this.viewer.clock,
         times: times,
-        credit: "NASA Global Imagery Browse Services for EOSDIS",
-      });
+        credit: 'NASA Global Imagery Browse Services for EOSDIS',
+      })
 
-      this.viewer.imageryLayers.addImageryProvider(provider);
+      this.viewer.imageryLayers.addImageryProvider(provider)
       this.viewer.camera.flyTo({
         destination: Cartesian3.fromDegrees(10.7522, 59.9139, 20009999),
       })
