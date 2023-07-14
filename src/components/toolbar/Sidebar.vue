@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import ButtonGroup from '@/buttons/ButtonGroup.vue'
 import ButtonList from '@/buttons/ButtonList.vue'
 import ButtonSearch from '@/buttons/ButtonSearch.vue'
 import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
 import useLayers from '@Func/cesium/layers'
+import use3DTileset from '@Func/tileset3D/3DTileset'
+import useTerrains from '@Func/terrain/terrain'
 
 const actions = useCesiumPresentation()
 const layers = useLayers()
-const activeLayer = (event: MouseEvent, layer: string) => {
+const tileset = use3DTileset()
+const maps = useTerrains()
+const activeLayer = (
+  event: MouseEvent,
+  key: string,
+  layer: (key: string) => void
+) => {
   const btn = event.target as HTMLElement
   if (btn.getAttribute('active')) {
     btn.removeAttribute('active')
   } else {
     btn.setAttribute('active', 'true')
   }
-  layers.visibleLayres(layer)
+  layer(key)
 }
 </script>
 
@@ -38,19 +47,35 @@ const activeLayer = (event: MouseEvent, layer: string) => {
         <button @click="actions.createAnimate()">Animation generate</button>
         <button @click="actions.createBuild()">Generate building</button>
         <button @click="actions.bumpToSweden()">Bump to Sweden</button>
-        <!-- <button @click="layers.hydrographyBores()">Add Hydrography Bores</button>
-        <button @click="layers.eikerOld(true)">Modum - Eiker 1965</button>
-        <button @click="layers.tryThis()">NASA</button>
-        <button @click="layers.administrativeUnits(true)">Action</button> -->
       </ButtonList>
       <ButtonList icon="layer-group" text="Layers">
-        <button 
-          class="layer-btn"
+        <button
           v-for="layer of layers.getLayers()"
-          @click="(e) => activeLayer(e, layer)"
+          @click="e => activeLayer(e, layer, layers.visibleLayres)"
         >
           {{ layer }}
         </button>
+      </ButtonList>
+      <ButtonList icon="mosque" text="3D Buildings">
+        <div v-if="tileset.getLoaded()">
+          <button
+            v-for="tile of tileset.getTileset()"
+            @click="e => activeLayer(e, tile, tileset.visibleTileset)"
+          >
+            {{ tile }}
+          </button>
+        </div>
+      </ButtonList>
+      <ButtonList icon="earth-americas" text="Terrain">
+        <ButtonGroup
+          type="terrain"
+          @on-change="(e: string) => maps.visibleTerrain(e)"
+        >
+          <button terrain="off" active>OFF</button>
+          <button v-for="map of maps.getTerrains()" :terrain="map">
+            {{ map }}
+          </button>
+        </ButtonGroup>
       </ButtonList>
       <ButtonList icon="circle-info" text="Instructions">
         <table>
@@ -215,3 +240,4 @@ const activeLayer = (event: MouseEvent, layer: string) => {
   }
 }
 </style>
+@Func/terrain/3DTileset

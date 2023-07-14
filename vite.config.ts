@@ -12,6 +12,8 @@ export default defineConfig(({ mode }) => {
     define: {
       __CESIUM_TOKEN__: JSON.stringify(env.VITE_CESIUM_TOKEN),
       __GOOGLE_TOKEN__: JSON.stringify(env.VITE_GOOGLE_MAPS_TOKEN),
+      __MAPBOX_TOKEN__: JSON.stringify(env.VITE_MAPBOX_TOKEN),
+      __CLIENT_ID__: JSON.stringify(env.VITE_AUTH_CLIENT_ID),
     },
     css: {
       preprocessorOptions: {
@@ -27,7 +29,7 @@ export default defineConfig(({ mode }) => {
         '@Enum': fileURLToPath(new URL('./src/enums', import.meta.url)),
         '@Icon': fileURLToPath(new URL('./src/assets/icon', import.meta.url)),
         '@Func': fileURLToPath(new URL('./src/composables', import.meta.url)),
-        '@Global': fileURLToPath(new URL('./src/global/global', import.meta.url)),
+        '@Global': fileURLToPath(new URL('./src/global', import.meta.url)),
       },
     },
     server: {

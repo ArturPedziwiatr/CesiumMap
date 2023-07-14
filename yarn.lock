@@ -7,6 +7,19 @@
   resolved "https://nexus.gsd.pl/repository/npm-group/@adobe/css-tools/-/css-tools-4.2.0.tgz#e1a84fca468f4b337816fcb7f0964beb620ba855"
   integrity sha512-E09FiIft46CmH5Qnjb0wsW54/YQd69LsxeKUOWawmws1XWvyFGURnAChH0mlr7YPFR1ofwvUQfcL0J3lMxXqPA==
 
+"@auth0/auth0-spa-js@^2.0.4":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-spa-js/-/auth0-spa-js-2.1.0.tgz#f1515d5e7d6b6bebe2a035b7297f936e8711f80f"
+  integrity sha512-7cF2NxrslgjArIdBwpNg02atPldpHHOrXxDScL71cbxKuKny3eziZIpNHQAdsPFiLhjKQ+izWmLq2ZRFlYB/eQ==
+
+"@auth0/auth0-vue@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@auth0/auth0-vue/-/auth0-vue-2.2.1.tgz#916f718de1b776ad4d386f0138a3a60660eaf1d9"
+  integrity sha512-RmN0TQn/ZK/P6HU613wsJKsoRSCmxywaMBHc4aQRH9YfJVaZQyzld6MjhO+xTmGpFoBXcui43WI8KcCMBAe6pw==
+  dependencies:
+    "@auth0/auth0-spa-js" "^2.0.4"
+    vue "^3.2.41"
+
 "@babel/parser@^7.20.15", "@babel/parser@^7.21.3":
   version "7.22.6"
   resolved "https://nexus.gsd.pl/repository/npm-group/@babel/parser/-/parser-7.22.6.tgz#201f8b47be20c76c7c5743b9c16129760bf9a975"
@@ -1297,11 +1310,6 @@ urijs@^1.19.7:
   resolved "https://nexus.gsd.pl/repository/npm-group/urijs/-/urijs-1.19.11.tgz#204b0d6b605ae80bea54bea39280cdb7c9f923cc"
   integrity sha512-HXgFDgDommxn5/bIv0cnQZsPhHDA90NPHD6+c/v21U5+Sx5hoP8+dP9IZXBU1gIfvdRfhG8cel9QNPeionfcCQ==
 
-uuid@^9.0.0:
-  version "9.0.0"
-  resolved "https://nexus.gsd.pl/repository/npm-group/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
-  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
-
 vite-plugin-cesium@^1.2.22:
   version "1.2.22"
   resolved "https://nexus.gsd.pl/repository/npm-group/vite-plugin-cesium/-/vite-plugin-cesium-1.2.22.tgz#55dc6d7dba6f8c28ee815e0d70359d67ef763694"
@@ -1339,7 +1347,7 @@ vue-tsc@^1.8.3:
     "@vue/typescript" "1.8.4"
     semver "^7.3.8"
 
-vue@^3.3.4:
+vue@^3.2.41, vue@^3.3.4:
   version "3.3.4"
   resolved "https://nexus.gsd.pl/repository/npm-group/vue/-/vue-3.3.4.tgz#8ed945d3873667df1d0fcf3b2463ada028f88bd6"
   integrity sha512-VTyEYn3yvIeY1Py0WaYGZsXnz3y5UnGi62GjVEqvEGPl6nxbOrCXbVOTQWBEJUqAyTUk2uJ5JLVnYJ6ZzGbrSw==

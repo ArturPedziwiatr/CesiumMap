@@ -11,7 +11,7 @@ import useCreateModel from '@Func/model/createModel'
 import { ref, inject } from 'vue'
 import { MapsType } from '@Enum/MapType'
 import { IDataPoint } from '@Func/cesium/ICesiumPresentation'
-import global from '@Global'
+import global from '@Global/global'
 
 const createModel = useCreateModel()
 export default function useCesiumPresentation() {

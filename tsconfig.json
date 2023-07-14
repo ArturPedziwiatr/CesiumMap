@@ -21,7 +21,7 @@
       "@Script/*": ["./src/script/*"],
       "@Enum/*": ["./src/enums/*"],
       "@Func/*": ["./src/composables/*"],
-      "@Global/*": ["./src/global/global"],
+      "@Global/*": ["./src/global/*"],
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

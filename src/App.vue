@@ -5,7 +5,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
 import { MapsType } from '@Enum/MapType.ts'
-import global from '@Global'
+import global from '@Global/global'
+import Login from '@/login/login.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
@@ -13,7 +14,10 @@ const viewerConstruct = ref(false)
 
 onMounted(() => {
   const viewer = ref(new Viewer('cesiumMap', {
-    terrain: Terrain.fromWorldTerrain(),
+    terrain: Terrain.fromWorldTerrain({
+      requestWaterMask : true,
+      requestVertexNormals : true
+    }),
   }))
   viewerConstruct.value = !viewerConstruct.value
   navigator.geolocation.getCurrentPosition(
@@ -47,6 +51,7 @@ onMounted(() => {
 <template>
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
+    <Login />
     <Sidebar v-if="viewerConstruct" />
   </div>
 </template>
