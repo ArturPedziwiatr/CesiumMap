@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => {
       __GOOGLE_TOKEN__: JSON.stringify(env.VITE_GOOGLE_MAPS_TOKEN),
       __MAPBOX_TOKEN__: JSON.stringify(env.VITE_MAPBOX_TOKEN),
       __CLIENT_ID__: JSON.stringify(env.VITE_AUTH_CLIENT_ID),
+      __DOMAIN__: JSON.stringify(env.VITE_AUTH_CLIENT_ID),
     },
     css: {
       preprocessorOptions: {

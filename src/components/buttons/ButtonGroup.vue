@@ -22,8 +22,6 @@ const click = (event: MouseEvent) => {
   if (node) {
     Array.from(node.children).forEach(elem => {    
       const childType = (elem as HTMLElement).getAttribute(props.type)
-      console.log(childType === type && !elem.getAttribute('active'));
-      
       if (childType && childType === type && !elem.getAttribute('active'))
         (elem as HTMLElement).setAttribute('active', 'true')
       else (elem as HTMLElement).removeAttribute('active')

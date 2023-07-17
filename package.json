@@ -13,14 +13,20 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.2.1",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@pnext/three-loader": "^0.2.9",
+    "@three-ts/orbit-controls": "^1.4.7",
     "@types/cesium": "^1.70.0",
+    "@types/three": "^0.154.0",
+    "axios": "^1.4.0",
     "cesium": "^1.107.0",
     "lodash": "^4.17.21",
+    "three": "^0.154.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {

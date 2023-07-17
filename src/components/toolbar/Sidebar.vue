@@ -6,7 +6,11 @@ import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
 import useLayers from '@Func/cesium/layers'
 import use3DTileset from '@Func/tileset3D/3DTileset'
 import useTerrains from '@Func/terrain/terrain'
+import { useAuth0 } from '@auth0/auth0-vue'
+import ButtonLogin from '@/buttons/ButtonLogin.vue'
+import AuthSections from '@/auth/AuthSections.vue'
 
+const { isAuthenticated, user } = useAuth0()
 const actions = useCesiumPresentation()
 const layers = useLayers()
 const tileset = use3DTileset()
@@ -24,13 +28,24 @@ const activeLayer = (
   }
   layer(key)
 }
+const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
 </script>
 
 <template>
   <div class="sidebar">
     <header>
-      <img src="../../assets/icon/cesium.svg" alt="logo" />
-      <h1>CESIUM ion</h1>
+      <!-- {{ user }} -->
+      <div v-if="isAuthenticated" class="userauth">
+        <div class="image">
+          <div>{{ getInitials(user!.name) ?? 'U' }}</div>
+          <div>{{ getInitials(user!.family_name) }}</div>
+        </div>
+        <p>{{ user!.name }}</p>
+      </div>
+      <div v-else>
+        <img src="../../assets/icon/cesium.svg" alt="logo" />
+        <h1>CESIUM ion</h1>
+      </div>
       <div class="toggle">
         <Icon :icon="['fas', 'chevron-right']" />
       </div>
@@ -48,99 +63,104 @@ const activeLayer = (
         <button @click="actions.createBuild()">Generate building</button>
         <button @click="actions.bumpToSweden()">Bump to Sweden</button>
       </ButtonList>
-      <ButtonList icon="layer-group" text="Layers">
-        <button
-          v-for="layer of layers.getLayers()"
-          @click="e => activeLayer(e, layer, layers.visibleLayres)"
-        >
-          {{ layer }}
-        </button>
-      </ButtonList>
-      <ButtonList icon="mosque" text="3D Buildings">
-        <div v-if="tileset.getLoaded()">
+      <AuthSections>
+        <ButtonList icon="layer-group" text="Layers">
           <button
-            v-for="tile of tileset.getTileset()"
-            @click="e => activeLayer(e, tile, tileset.visibleTileset)"
+            v-for="layer of layers.getLayers()"
+            @click="e => activeLayer(e, layer, layers.visibleLayres)"
           >
-            {{ tile }}
+            {{ layer }}
           </button>
-        </div>
-      </ButtonList>
-      <ButtonList icon="earth-americas" text="Terrain">
-        <ButtonGroup
-          type="terrain"
-          @on-change="(e: string) => maps.visibleTerrain(e)"
-        >
-          <button terrain="off" active>OFF</button>
-          <button v-for="map of maps.getTerrains()" :terrain="map">
-            {{ map }}
-          </button>
-        </ButtonGroup>
-      </ButtonList>
-      <ButtonList icon="circle-info" text="Instructions">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <img
-                  src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseLeft.svg"
-                  width="48"
-                  height="48"
-                />
-              </td>
-              <td>
-                <div class="cesium-navigation-help-pan">Pan view</div>
-                <div class="cesium-navigation-help-details">
-                  Left click + drag
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img
-                  src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseRight.svg"
-                  width="48"
-                  height="48"
-                />
-              </td>
-              <td>
-                <div class="cesium-navigation-help-zoom">Zoom view</div>
-                <div class="cesium-navigation-help-details">
-                  Right click + drag, or
-                </div>
-                <div class="cesium-navigation-help-details">
-                  Mouse wheel scroll
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <img
-                  src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseMiddle.svg"
-                  width="48"
-                  height="48"
-                />
-              </td>
-              <td>
-                <div class="cesium-navigation-help-rotate">Rotate view</div>
-                <div class="cesium-navigation-help-details">
-                  Middle click + drag, or
-                </div>
-                <div class="cesium-navigation-help-details">
-                  CTRL + Left/Right click + drag
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </ButtonList>
+        </ButtonList>
+        <ButtonList icon="mosque" text="3D Buildings">
+          <div v-if="tileset.getLoaded()">
+            <button
+              v-for="tile of tileset.getTileset()"
+              @click="e => activeLayer(e, tile, tileset.visibleTileset)"
+            >
+              {{ tile }}
+            </button>
+          </div>
+        </ButtonList>
+        <ButtonList icon="earth-americas" text="Terrain">
+          <ButtonGroup
+            type="terrain"
+            @on-change="(e: string) => maps.visibleTerrain(e)"
+          >
+            <button terrain="off" active>OFF</button>
+            <button v-for="map of maps.getTerrains()" :terrain="map">
+              {{ map }}
+            </button>
+          </ButtonGroup>
+        </ButtonList>
+        <ButtonList icon="circle-info" text="Instructions">
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <img
+                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseLeft.svg"
+                    width="48"
+                    height="48"
+                  />
+                </td>
+                <td>
+                  <div class="cesium-navigation-help-pan">Pan view</div>
+                  <div class="cesium-navigation-help-details">
+                    Left click + drag
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseRight.svg"
+                    width="48"
+                    height="48"
+                  />
+                </td>
+                <td>
+                  <div class="cesium-navigation-help-zoom">Zoom view</div>
+                  <div class="cesium-navigation-help-details">
+                    Right click + drag, or
+                  </div>
+                  <div class="cesium-navigation-help-details">
+                    Mouse wheel scroll
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseMiddle.svg"
+                    width="48"
+                    height="48"
+                  />
+                </td>
+                <td>
+                  <div class="cesium-navigation-help-rotate">Rotate view</div>
+                  <div class="cesium-navigation-help-details">
+                    Middle click + drag, or
+                  </div>
+                  <div class="cesium-navigation-help-details">
+                    CTRL + Left/Right click + drag
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ButtonList>
+      </AuthSections>
     </div>
+    <ButtonLogin class="btn--login" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .sidebar {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   top: 0;
   left: 0;
   background: $sidebar-color;
@@ -149,24 +169,47 @@ const activeLayer = (
   padding: 10px 14px;
 
   & header {
-    display: flex;
-    align-items: center;
     position: relative;
 
-    & img {
-      width: 40px;
-      height: 40px;
-      background: $primary-color;
-      padding: 0.2rem;
-      border-radius: 4px;
+    & div {
+      display: flex;
+      align-items: center;
+
+      & img {
+        width: 40px;
+        height: 40px;
+        background: $primary-color;
+        padding: 0.2rem;
+        border-radius: 4px;
+      }
+
+      & h1 {
+        margin-left: 8px;
+        font-size: 24px;
+        font-weight: 600;
+        vertical-align: middle;
+        color: $text-color;
+      }
     }
 
-    & h1 {
-      margin-left: 8px;
-      font-size: 24px;
-      font-weight: 600;
-      vertical-align: middle;
-      color: $text-color;
+    & .userauth {
+      & .image {
+        border-radius: 4px;
+        background: $primary-color;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $sidebar-color;
+      }
+
+      & p {
+        font-size: 18px;
+        font-weight: 500;
+        margin-left: 8px;
+        color: $text-color;
+      }
     }
 
     & .toggle {
@@ -238,6 +281,9 @@ const activeLayer = (
       }
     }
   }
+
+  & .btn--login {
+    margin-top: auto;
+  }
 }
 </style>
-@Func/terrain/3DTileset

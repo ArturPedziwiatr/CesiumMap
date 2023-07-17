@@ -6,7 +6,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
 import { MapsType } from '@Enum/MapType.ts'
 import global from '@Global/global'
-import Login from '@/login/login.vue'
+import PotreeGenerator from '@/potree/PotreeGenerator.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
@@ -51,8 +51,8 @@ onMounted(() => {
 <template>
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
-    <Login />
     <Sidebar v-if="viewerConstruct" />
+    <PotreeGenerator />
   </div>
 </template>
 
