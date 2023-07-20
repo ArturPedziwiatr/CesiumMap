@@ -11,10 +11,12 @@ defineProps({
     required: true,
   },
 })
+
+const expanded = () => document.querySelector('.sidebar')?.removeAttribute('collapsed')
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" @click="expanded">
     <div class="collapsible">
       <input type="checkbox" :id="`collapsible-${id}`" />
       <label :for="`collapsible-${id}`">
@@ -57,7 +59,7 @@ defineProps({
         }
 
         & + label {
-          color: $primary-color;
+          color: $btn-hover-color;
         }
       }
     }
@@ -75,7 +77,7 @@ defineProps({
       background: $sidebar-color;
 
       &:hover {
-        color: $primary-color;
+        color: $btn-hover-color;
       }
 
       & p {

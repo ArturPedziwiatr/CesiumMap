@@ -9,7 +9,7 @@ createApp(App)
   .component('Icon', FontAwesomeIcon)
   .use(
     createAuth0({
-      domain: 'https://dev-j4c8wk5j6kzjf3bv.us.auth0.com',
+      domain: __DOMAIN__,
       clientId: __CLIENT_ID__,
       authorizationParams: {
         redirect_uri: window.location.origin,

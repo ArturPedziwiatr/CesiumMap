@@ -19,7 +19,7 @@ const strategy = computed(() => (isAuthenticated.value ? signout : sigin))
 .logger--wrapper {
   & button {
     background: $sidebar-color;
-    color: $text-color;
+    color: $text-header-color;
     border: none;
     opacity: 0.9;
     border-radius: 4px;
@@ -29,7 +29,7 @@ const strategy = computed(() => (isAuthenticated.value ? signout : sigin))
 
     &:hover {
       background: $primary-color;
-      color: $primary-light-color;
+      color: $btn-login-hover-color;
     }
   }
 }

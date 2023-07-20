@@ -70,8 +70,9 @@ export default function useuse3DTileset() {
 
   const visibleTileset = (alias: string) => {
     if (terrainBox.has(alias)) {
-      const { terrain } = terrainBox.get(alias)!
+      const { terrain, glob } = terrainBox.get(alias)!
       terrain.show = !terrain.show
+      viewer.scene.globe.show = glob
     }
   }
 

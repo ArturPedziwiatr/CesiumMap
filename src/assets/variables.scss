@@ -1,11 +1,36 @@
 // ===== Colors ===== \\
-$body-color: #E4E9F7;
-$sidebar-color: #FFF;
-$primary-color: #695CFE;
-$primary-light-color: #F6F5FF;
-$toggle-color: #DDD;
-$text-color: #707070;
+:root {
+  --body-color: #E4E9F7;
+  --sidebar-color: #FFF;
+  --primary-color: #695CFE;
+  --btn-hover-color: #695CFE;
+  --btn-login-hover-color: #F6F5FF;
+  --primary-light-color: #F6F5FF;
+  --toggle-color: #DDD;
+  --text-color: #707070;
+  --text-header-color: #707070;
+}
+body.dark {
+  --body-color: #18191A;
+  --sidebar-color: #242526;
+  --primary-color: #3A3B3C;
+  --btn-hover-color: #FFF;
+  --btn-login-hover-color: #FFF;
+  --primary-light-color: #3A3B3C;
+  --toggle-color: #FFF;
+  --text-color: #CCC;
+  --text-header-color: #FFF;
+}
 
+$body-color: var(--body-color);
+$sidebar-color: var(--sidebar-color);
+$primary-color: var(--primary-color);
+$btn-hover-color: var(--btn-hover-color);
+$primary-light-color: var(--primary-light-color);
+$toggle-color: var(--toggle-color);
+$text-color: var(--text-color);
+$text-header-color: var(--text-header-color);
+$btn-login-hover-color: var(--btn-login-hover-color);
 
 // ===== Transition ===== \\
 $tran-02: all 0.2s ease;

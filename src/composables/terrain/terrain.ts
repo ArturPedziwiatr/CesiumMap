@@ -32,6 +32,8 @@ export default function useTerrains() {
 
   const visibleTerrain = (alias: string) =>
     mapBox.forEach((val, key) => {
+      console.log({val,key});
+      
       if (key === alias) val.show = !val.show
       else val.show = false
     })

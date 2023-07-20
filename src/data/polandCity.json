@@ -1,0 +1,82 @@
+[
+  {
+      "title": "Łódź",
+      "description": "Łódzkie",
+      "coordinates": [19.4569911, 51.7687323]
+  },
+  {
+      "title": "Warsaw",
+      "description": "Mazowieckie",
+      "coordinates": [21.0111, 52.23]
+  },
+  {
+      "title": "Kraków",
+      "description": "Małopolskie",
+      "coordinates": [19.9372, 50.0614]
+  },
+  {
+      "title": "Wrocław",
+      "description": "Dolnośląskie",
+      "coordinates": [17.0325, 51.11]
+  },
+  {
+      "title": "Poznań",
+      "description": "Wielkopolskie",
+      "coordinates": [16.9336, 52.4083]
+  },
+  {
+      "title": "Gdańsk",
+      "description": "Pomorskie",
+      "coordinates": [18.6453, 54.3475]
+  },
+  {
+      "title": "Szczecin",
+      "description": "Zachodniopomorskie",
+      "coordinates": [14.5481, 53.4325]
+  },
+  {
+      "title": "Bydgoszcz",
+      "description": "Kujawsko-Pomorskie",
+      "coordinates": [18.0003, 53.1219]
+  },
+  {
+      "title": "Lublin",
+      "description": "Lubelskie",
+      "coordinates": [22.5667, 51.25]
+  },
+  {
+      "title": "Białystok",
+      "description": "Podlaskie",
+      "coordinates": [23.1456, 53.1353]
+  },
+  {
+      "title": "Katowice",
+      "description": "Śląskie",
+      "coordinates": [19.0167, 50.2667]
+  },
+  {
+      "title": "Zielona Góra",
+      "description": "Lubuskie",
+      "coordinates": [15.5, 51.9333]
+  },
+  {
+      "title": "Kielce",
+      "description": "Świętokrzyskie",
+      "coordinates": [20.6333, 50.8742]
+  },
+  {
+      "title": "Olsztyn",
+      "description": "Warmińsko-Mazurskie",
+      "coordinates": [20.4792, 53.7778]
+  },
+  {
+    "title": "Opole",
+    "description": "Opolskie",
+    "coordinates": [17.9333, 50.6667]
+  },
+  {
+      "title": "Mielec",
+      "description": "Podkarpackie",
+      "coordinates": [21.4333, 50.2833]
+  }
+]

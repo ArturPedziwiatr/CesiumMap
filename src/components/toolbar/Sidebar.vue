@@ -9,12 +9,16 @@ import useTerrains from '@Func/terrain/terrain'
 import { useAuth0 } from '@auth0/auth0-vue'
 import ButtonLogin from '@/buttons/ButtonLogin.vue'
 import AuthSections from '@/auth/AuthSections.vue'
+import { ref } from 'vue'
 
-const { isAuthenticated, user } = useAuth0()
-const actions = useCesiumPresentation()
-const layers = useLayers()
-const tileset = use3DTileset()
-const maps = useTerrains()
+const { isAuthenticated, user } = useAuth0(),
+  actions = useCesiumPresentation(),
+  tileset = use3DTileset(),
+  layers = useLayers(),
+  maps = useTerrains(),
+  sidebar = ref<HTMLElement>(),
+  toggle = ref<HTMLElement>()
+
 const activeLayer = (
   event: MouseEvent,
   key: string,
@@ -29,12 +33,18 @@ const activeLayer = (
   layer(key)
 }
 const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
+
+const sidebarAction = () => {
+  if (!sidebar.value) return
+  if(sidebar.value.getAttribute('collapsed'))
+    sidebar.value.removeAttribute('collapsed')
+  else sidebar.value.setAttribute('collapsed', 'true')
+}
 </script>
 
 <template>
-  <div class="sidebar">
+  <div ref="sidebar" class="sidebar">
     <header>
-      <!-- {{ user }} -->
       <div v-if="isAuthenticated" class="userauth">
         <div class="image">
           <div>{{ getInitials(user!.name) ?? 'U' }}</div>
@@ -46,7 +56,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
         <img src="../../assets/icon/cesium.svg" alt="logo" />
         <h1>CESIUM ion</h1>
       </div>
-      <div class="toggle">
+      <div ref="toggle" class="toggle" @click="sidebarAction">
         <Icon :icon="['fas', 'chevron-right']" />
       </div>
     </header>
@@ -153,6 +163,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
       </AuthSections>
     </div>
     <ButtonLogin class="btn--login" />
+
   </div>
 </template>
 
@@ -167,6 +178,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
   width: $sidebar-width-expanded;
   height: 100%;
   padding: 10px 14px;
+  transition: $tran-04;
 
   & header {
     position: relative;
@@ -188,7 +200,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
         font-size: 24px;
         font-weight: 600;
         vertical-align: middle;
-        color: $text-color;
+        color: $text-header-color;
       }
     }
 
@@ -226,6 +238,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
       border-radius: 50%;
       color: $sidebar-color;
       font-size: 18px;
+      transition: $tran-04;
     }
   }
 
@@ -258,6 +271,7 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
       display: flex;
       padding: 0.5rem 0.4rem;
       margin: 0.3rem 0;
+      color: $text-color;
 
       &.primary {
         margin-top: 8px;
@@ -279,6 +293,19 @@ const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
         font-weight: $weight-6;
         margin-left: 1rem;
       }
+    }
+  }
+
+  &[collapsed=true] {
+    width: 78px;
+
+    & h1,
+    & p {
+      opacity: 0
+    }
+
+    & .toggle {
+      transform: rotate(180deg);
     }
   }
 
