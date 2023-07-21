@@ -1,58 +1,40 @@
 <script setup lang="ts">
 import { onMounted, provide, ref } from 'vue'
-import { Ion, Cartesian3, Viewer, Terrain, GeoJsonDataSource, Color, Material, MaterialProperty } from 'cesium'
+import {
+  Ion,
+  Cartesian3,
+  Viewer,
+  CesiumTerrainProvider,
+Terrain
+} from 'cesium'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
 import { MapsType } from '@Enum/MapType.ts'
 import global from '@Global/global'
-import PotreeGenerator from '@/potree/PotreeGenerator.vue'
+// import PotreeGenerator from '@/potree/PotreeGenerator.vue'
+import AuthSections from '@/auth/AuthSections.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
 const viewerConstruct = ref(false)
 
 onMounted(() => {
-  const viewer = ref(new Viewer('cesiumMap', {
-    terrain: Terrain.fromWorldTerrain({
-      requestWaterMask : true,
-      requestVertexNormals : true
-    }),
-  }))
-  // viewer.value.scene.primitives.add(new Cesium3DTileset({ 
-  //   url: "http://server/3dtiles3/tileset.json" 
-  // }))
-  setTimeout(async () => {
-    const GeoJSON = './src/data/poland.geojson'
-    const loadData = async () => {
-        try {
-            const dataSource = await GeoJsonDataSource.load(GeoJSON);
-            
-            console.log(Array.from(dataSource.entities.values).map(x => x?.));
-            viewer.value.dataSources.add(dataSource);
-            const entities = dataSource.entities.values;
-            for (var i = 0; i < entities.length; i++) {
-              const entity = entities[i];
-                
-                entity.polygon!.outlineColor = Color.BLACK
-                entity.polygon!.outlineWidth = 6000000.0
-                entity.polygon!.height = 50
-                
-                entity.polygon!.extrudedHeight = entity.properties!.parent_id;
-                if (entity?.properties?.code._value === '16') {   
-                  entity.polygon.material  = Color.fromCssColorString('#695CFE')
-                } else {
-                  entity.polygon.material  = Color.fromCssColorString('#707070')
-                }
-            }
-            viewer.value.zoomTo(dataSource);
-        }
-        catch (err) {
-            console.log("Error: ", err);
-        }
-    }
-    loadData()
-  })
+  const viewer = ref(
+    new Viewer('cesiumMap', {
+      homeButton: false,
+      baseLayerPicker: false,
+      infoBox: true,
+      fullscreenButton: false,
+      geocoder: false,
+      useBrowserRecommendedResolution: false,
+      skyAtmosphere: false,
+      terrain: Terrain.fromWorldTerrain({
+        requestWaterMask : true,
+        requestVertexNormals : true
+      }),
+    })
+  )
 
   viewerConstruct.value = !viewerConstruct.value
   navigator.geolocation.getCurrentPosition(
@@ -76,10 +58,41 @@ onMounted(() => {
       ),
     })
   }
-  provide<Viewer>(
-    MapsType.Viewer,
-    viewer.value
-  )
+  provide<Viewer>(MapsType.Viewer, viewer.value)
+
+  // const lay = [{
+  //   id: "floor",
+  //   url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/floorpolygon",
+  // },
+  // {
+  //   id: "unit",
+  //   url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/unitpolygon",
+  // }]
+  // var apiKey = 'c84e886891014383bcf608423555b0ba';
+  // var geoJSONDataSourceFloor = new GeoJsonDataSource("floor")
+  // var geoJSONDataSourceUnit = new GeoJsonDataSource("unit")
+  // viewer.value.dataSources.add(geoJSONDataSourceFloor);
+  // viewer.value.dataSources.add(geoJSONDataSourceUnit);
+  // viewer.value.camera.moveEnd.addEventListener(function() {
+  // var rect = viewer.value.camera.computeViewRectangle(viewer.value.scene.globe.ellipsoid, new Rectangle())
+  // var east = Math.toDegrees(rect!.east)
+  // var west = Math.toDegrees(rect!.west)
+  // var north = Math.toDegrees(rect!.north)
+  // var south = Math.toDegrees(rect!.south)
+
+  // geoJSONDataSourceFloor.load(lay[0].url + '?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application/json&srsname=EPSG:4326&bbox=' + west + ',' + south + ',' + east + ',' + north + ',EPSG:4326&maxFeatures=50000&key=' + apiKey, {
+  //   stroke: Color.CADETBLUE,
+  //   fill: Color.AQUA,
+  //   strokeWidth: 3
+  // }).then(function() {})
+
+
+  // geoJSONDataSourceUnit.load(lay[1].url + '?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application/json&srsname=EPSG:4326&bbox=' + west + ',' + south + ',' + east + ',' + north + ',EPSG:4326&maxFeatures=50000&key=' + apiKey, {
+  //   stroke: Color.CADETBLUE,
+  //   fill: Color.AQUA,
+  //   strokeWidth: 3
+  // }).then(function() {})
+  // });
 })
 </script>
 
@@ -87,7 +100,9 @@ onMounted(() => {
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
     <Sidebar v-if="viewerConstruct" />
-    <!-- <PotreeGenerator /> -->
+    <AuthSections>
+      <!-- <PotreeGenerator /> -->
+    </AuthSections>
   </div>
 </template>
 

@@ -13,7 +13,7 @@ GoogleMaps.defaultApiKey = __GOOGLE_TOKEN__
 const terrainBox = new Map<string, I3DTileset>()
 const loaded = ref(false)
 
-export default function useuse3DTileset() {
+export default function use3DTileset() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
   
   const googleInit = async (alias: string) => {

@@ -16,6 +16,15 @@ const layersBox = new Map<string, ILayer>()
 
 export default function useLayers() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
+  const lay = [{
+    id: "floor",
+    url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/floorpolygon",
+  },
+  {
+    id: "unit",
+    url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/unitpolygon",
+  }
+]
 
   const addLayer = async (input: ILayerCreate) => {
     try {

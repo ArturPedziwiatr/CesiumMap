@@ -23,6 +23,7 @@
       "@Func/*": ["./src/composables/*"],
       "@Global/*": ["./src/global/*"],
     },
+    "types": ["cesium"],
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

@@ -10,11 +10,13 @@ import { useAuth0 } from '@auth0/auth0-vue'
 import ButtonLogin from '@/buttons/ButtonLogin.vue'
 import AuthSections from '@/auth/AuthSections.vue'
 import { ref } from 'vue'
+import useGeoJSONLoader from '@Func/geojson/GeoJSONLoader'
 
 const { isAuthenticated, user } = useAuth0(),
   actions = useCesiumPresentation(),
   tileset = use3DTileset(),
   layers = useLayers(),
+  sources = useGeoJSONLoader(),
   maps = useTerrains(),
   sidebar = ref<HTMLElement>(),
   toggle = ref<HTMLElement>()
@@ -80,6 +82,12 @@ const sidebarAction = () => {
             @click="e => activeLayer(e, layer, layers.visibleLayres)"
           >
             {{ layer }}
+          </button>
+          <button
+            v-for="source of sources.getSources()"
+            @click="e => activeLayer(e, source, sources.visibleSource)"
+          >
+            {{ source }}
           </button>
         </ButtonList>
         <ButtonList icon="mosque" text="3D Buildings">
