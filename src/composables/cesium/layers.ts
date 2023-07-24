@@ -126,6 +126,12 @@ export default function useLayers() {
         layers: 'fylker_2017',
         flyTo: Cartesian3.fromDegrees(14.602143, 65.051215, 990000),
       })
+      // addLayer({
+      //   alias: 'Anadrome',
+      //   url: 'https://wfs.nibio.no/cgi-bin/ar50_2?Service=WFS&Request=GetCapabilities',
+      //   layers: 'anadrome_forvaltningsregioner',
+      //   flyTo: Cartesian3.fromDegrees(14.602143, 65.051215, 990000),
+      // })
       addLayerProvider({
         alias: 'Corrected Reflectance',
         url: 'https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{Time}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg',

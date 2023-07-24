@@ -40,18 +40,7 @@ export default function use3DTileset() {
           defines: {
             material: "${feature['building:material']}",
           },
-          color: {
-            conditions: [
-              ['${material} === null', "color('white')"],
-              ["${material} === 'glass'", "color('skyblue', 0.5)"],
-              ["${material} === 'concrete'", "color('grey')"],
-              ["${material} === 'brick'", "color('indianred')"],
-              ["${material} === 'stone'", "color('lightslategrey')"],
-              ["${material} === 'metal'", "color('lightgrey')"],
-              ["${material} === 'steel'", "color('lightsteelblue')"],
-              ['true', "color('white')"],
-            ],
-          },
+          color: 'hsl(${height}/350, 0.8, 0.6)',
         })
         osmBuildings.show = false
         viewer.scene.primitives.add(osmBuildings)

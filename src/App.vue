@@ -4,8 +4,7 @@ import {
   Ion,
   Cartesian3,
   Viewer,
-  CesiumTerrainProvider,
-Terrain
+  Terrain,
 } from 'cesium'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -59,40 +58,6 @@ onMounted(() => {
     })
   }
   provide<Viewer>(MapsType.Viewer, viewer.value)
-
-  // const lay = [{
-  //   id: "floor",
-  //   url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/floorpolygon",
-  // },
-  // {
-  //   id: "unit",
-  //   url: "https://api.hkmapservice.gov.hk/ogc/wfs/indoor/unitpolygon",
-  // }]
-  // var apiKey = 'c84e886891014383bcf608423555b0ba';
-  // var geoJSONDataSourceFloor = new GeoJsonDataSource("floor")
-  // var geoJSONDataSourceUnit = new GeoJsonDataSource("unit")
-  // viewer.value.dataSources.add(geoJSONDataSourceFloor);
-  // viewer.value.dataSources.add(geoJSONDataSourceUnit);
-  // viewer.value.camera.moveEnd.addEventListener(function() {
-  // var rect = viewer.value.camera.computeViewRectangle(viewer.value.scene.globe.ellipsoid, new Rectangle())
-  // var east = Math.toDegrees(rect!.east)
-  // var west = Math.toDegrees(rect!.west)
-  // var north = Math.toDegrees(rect!.north)
-  // var south = Math.toDegrees(rect!.south)
-
-  // geoJSONDataSourceFloor.load(lay[0].url + '?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application/json&srsname=EPSG:4326&bbox=' + west + ',' + south + ',' + east + ',' + north + ',EPSG:4326&maxFeatures=50000&key=' + apiKey, {
-  //   stroke: Color.CADETBLUE,
-  //   fill: Color.AQUA,
-  //   strokeWidth: 3
-  // }).then(function() {})
-
-
-  // geoJSONDataSourceUnit.load(lay[1].url + '?service=WFS&version=1.1.0&request=GetFeature&outputFormat=application/json&srsname=EPSG:4326&bbox=' + west + ',' + south + ',' + east + ',' + north + ',EPSG:4326&maxFeatures=50000&key=' + apiKey, {
-  //   stroke: Color.CADETBLUE,
-  //   fill: Color.AQUA,
-  //   strokeWidth: 3
-  // }).then(function() {})
-  // });
 })
 </script>
 

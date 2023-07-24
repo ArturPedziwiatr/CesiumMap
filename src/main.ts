@@ -3,7 +3,6 @@ import './style.scss'
 import App from './App.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { createAuth0 } from '@auth0/auth0-vue'
-console.log(window.location.origin);
 
 createApp(App)
   .component('Icon', FontAwesomeIcon)

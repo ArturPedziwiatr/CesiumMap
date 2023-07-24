@@ -25,8 +25,10 @@ export default function useGeoJSONLoader() {
       const dataSource = await GeoJsonDataSource.load(url, options)
       dataSource.show = false
       
-      try { dynamic(dataSource) }
-      catch(err) { console.error(err) }
+      if (dynamic) {
+        try { dynamic(dataSource) }
+        catch(err) { console.error(err) }
+      }
       
       viewer.dataSources.add(dataSource)
       sources.set(alias, dataSource)
@@ -51,24 +53,28 @@ export default function useGeoJSONLoader() {
       dynamic: (dataSource: GeoJsonDataSource) => {
         dataSource.entities.values.map(entity => {
           if (!entity.polygon) return
-          console.log(entity.polygon.hierarchy)
-          entity.polygon.height! = 0
+          entity.polygon.height! = 2200
           const code = parseInt(entity?.properties?.code._value)
           if (code < 5) {
-            entity.polygon.material  = new Color(code, 0.3, 0.3, 0.4)
+            entity.polygon.material  = new Color(code*10, 0.3, 0.3, 0.4)
           }
           if (code < 10 && code > 5) {
-            entity.polygon.material  = new Color(1, 0.3, code, 0.4)
+            entity.polygon.material  = new Color(1, 0.3, code*10, 0.4)
           }             
           if (code < 20 && code > 10) {
-            entity.polygon.material  = new Color(1, code, 0.3, 0.4)
+            entity.polygon.material  = new Color(1, code*10, 0.3, 0.4)
           }
-          
-          console.log(entity.polygon!.hierarchy)
         })
         viewer.zoomTo(dataSource)
       }
     })
+    // load({
+    //   alias: 'Borders',
+    //   url: 'http://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries?SERVICE=WFS&VERSION=2.0.0&REQUEST=DescribeFeatureType&TYPENAME=A03_Granice_gmin&OUTPUTFORMAT=application%2Fgml%2Bxml%3B%20version%3D3.2',
+    //   options: {
+    //     fill: Color.PINK
+    //   }
+    // })
   }
 
   init()
