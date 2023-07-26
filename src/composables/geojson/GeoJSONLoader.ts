@@ -38,6 +38,7 @@ export default function useGeoJSONLoader() {
   }
 
   const getSources = () => Array.from(sources.keys())
+  const size = (): number => (sources.size)
 
   const visibleSource = (alias: string) => {
     if (sources.has(alias)) {
@@ -47,40 +48,40 @@ export default function useGeoJSONLoader() {
   }
 
   const init = async () => {
-    load({
+    await load({
       alias: 'Poland province',
       url: './src/data/poland.geojson',
       dynamic: (dataSource: GeoJsonDataSource) => {
         dataSource.entities.values.map(entity => {
           if (!entity.polygon) return
+          //@ts-ignore
           entity.polygon.height! = 2200
           const code = parseInt(entity?.properties?.code._value)
           if (code < 5) {
-            entity.polygon.material  = new Color(code*10, 0.3, 0.3, 0.4)
-          }
-          if (code < 10 && code > 5) {
+             //@ts-ignore
+             entity.polygon.material  = new Color(code*10, 0.3, 0.3, 0.4)
+            }
+            if (code < 10 && code > 5) {
+            //@ts-ignore
             entity.polygon.material  = new Color(1, 0.3, code*10, 0.4)
           }             
           if (code < 20 && code > 10) {
+            //@ts-ignore
             entity.polygon.material  = new Color(1, code*10, 0.3, 0.4)
           }
         })
         viewer.zoomTo(dataSource)
       }
     })
-    // load({
-    //   alias: 'Borders',
-    //   url: 'http://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WFS/AdministrativeBoundaries?SERVICE=WFS&VERSION=2.0.0&REQUEST=DescribeFeatureType&TYPENAME=A03_Granice_gmin&OUTPUTFORMAT=application%2Fgml%2Bxml%3B%20version%3D3.2',
-    //   options: {
-    //     fill: Color.PINK
-    //   }
-    // })
   }
 
   init()
 
+  
+
   return {
     getSources,
     visibleSource,
+    size,
   }
 }

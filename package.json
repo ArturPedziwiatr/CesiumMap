@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.2.1",
+    "@camptocamp/ogc-client": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
@@ -22,12 +23,15 @@
     "@pnext/three-loader": "^0.2.9",
     "@three-ts/orbit-controls": "^1.4.7",
     "@types/cesium": "^1.70.0",
+    "@types/lodash": "^4.14.196",
     "@types/three": "^0.154.0",
     "axios": "^1.4.0",
     "cesium": "^1.107.0",
+    "element-plus": "^2.3.8",
     "lodash": "^4.17.21",
     "three": "^0.154.0",
     "vue": "^3.3.4",
+    "wms-client": "^3.0.1",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {

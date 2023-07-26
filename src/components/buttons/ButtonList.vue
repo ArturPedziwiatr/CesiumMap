@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import _ from 'lodash'
-const id = _.uniqueId()
+import { uniqueId } from 'lodash'
+const id = uniqueId()
 defineProps({
   icon: {
     type: String,

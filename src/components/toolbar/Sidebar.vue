@@ -8,8 +8,8 @@ import use3DTileset from '@Func/tileset3D/3DTileset'
 import useTerrains from '@Func/terrain/terrain'
 import { useAuth0 } from '@auth0/auth0-vue'
 import ButtonLogin from '@/buttons/ButtonLogin.vue'
-import AuthSections from '@/auth/AuthSections.vue'
-import { ref } from 'vue'
+import AuthSection from '@/auth/AuthSection.vue'
+import { ref, watch } from 'vue'
 import useGeoJSONLoader from '@Func/geojson/GeoJSONLoader'
 
 const { isAuthenticated, user } = useAuth0(),
@@ -42,6 +42,7 @@ const sidebarAction = () => {
     sidebar.value.removeAttribute('collapsed')
   else sidebar.value.setAttribute('collapsed', 'true')
 }
+
 </script>
 
 <template>
@@ -75,7 +76,7 @@ const sidebarAction = () => {
         <button @click="actions.createBuild()">Generate building</button>
         <button @click="actions.bumpToSweden()">Bump to Sweden</button>
       </ButtonList>
-      <AuthSections>
+      <AuthSection>
         <ButtonList icon="layer-group" text="Layers">
           <button
             v-for="layer of layers.getLayers()"
@@ -85,7 +86,9 @@ const sidebarAction = () => {
           </button>
           <button
             v-for="source of sources.getSources()"
+            :key="source"
             @click="e => activeLayer(e, source, sources.visibleSource)"
+            asdffasfasdfasdfasdfasdfasdfqwerqwer23qwerqwerasdfgvxcvgasdftgwerywerty4ertyerty
           >
             {{ source }}
           </button>
@@ -94,6 +97,7 @@ const sidebarAction = () => {
           <div v-if="tileset.getLoaded()">
             <button
               v-for="tile of tileset.getTileset()"
+              :key="tile"
               @click="e => activeLayer(e, tile, tileset.visibleTileset)"
             >
               {{ tile }}
@@ -168,7 +172,7 @@ const sidebarAction = () => {
             </tbody>
           </table>
         </ButtonList>
-      </AuthSections>
+      </AuthSection>
     </div>
     <ButtonLogin class="btn--login" />
 

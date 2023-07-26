@@ -8,7 +8,7 @@ const { isAuthenticated } = useAuth0()
 <template>
   <div
     class="authorization-wrapper"
-    v-if="isAuthenticated"
+    v-if="!isAuthenticated"
     :key="`${isAuthenticated}`"
   >
     <slot />

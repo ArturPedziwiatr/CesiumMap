@@ -11,8 +11,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
 import { MapsType } from '@Enum/MapType.ts'
 import global from '@Global/global'
+import AuthSection from '@/auth/AuthSection.vue'
+import { WmsEndpoint } from '@camptocamp/ogc-client'
 // import PotreeGenerator from '@/potree/PotreeGenerator.vue'
-import AuthSections from '@/auth/AuthSections.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
@@ -59,15 +60,24 @@ onMounted(() => {
   }
   provide<Viewer>(MapsType.Viewer, viewer.value)
 })
+const inita = async () => {
+  try {
+    const endpoint = await new WmsEndpoint('https://mapy.geoportal.gov.pl/wss/ext/KrajowaIntegracjaNumeracjiAdresowej').isReady()
+    const layer = endpoint.getLayers()
+    console.log(layer)
+    
+  } catch (err) { console.error(err) }
+}
+inita()
 </script>
 
 <template>
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
     <Sidebar v-if="viewerConstruct" />
-    <AuthSections>
+    <AuthSection>
       <!-- <PotreeGenerator /> -->
-    </AuthSections>
+    </AuthSection>
   </div>
 </template>
 
