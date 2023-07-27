@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
         '@Icon': fileURLToPath(new URL('./src/assets/icon', import.meta.url)),
         '@Func': fileURLToPath(new URL('./src/composables', import.meta.url)),
         '@Global': fileURLToPath(new URL('./src/global', import.meta.url)),
+        '@Interface': fileURLToPath(new URL('./src/interface', import.meta.url)),
       },
     },
     server: {

@@ -4,12 +4,20 @@ const id = uniqueId()
 defineProps({
   icon: {
     type: String,
-    required: true,
+    required: false,
   },
   text: {
     type: String,
     required: true,
   },
+  checked: {
+    type: Boolean,
+    default: false
+  },
+  src: {
+    type: String,
+    reguired: false
+  }
 })
 
 const expanded = () => document.querySelector('.sidebar')?.removeAttribute('collapsed')
@@ -18,9 +26,10 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 <template>
   <div class="wrapper" @click="expanded">
     <div class="collapsible">
-      <input type="checkbox" :id="`collapsible-${id}`" />
+      <input type="checkbox" :id="`collapsible-${id}`" :checked="checked" />
       <label :for="`collapsible-${id}`">
-        <Icon :icon="['fas', icon]" />
+        <img v-if="src" :src="src" alt="logo" />
+        <Icon v-else-if="icon" :icon="['fas', icon]" />
         <p>{{ text }}</p>
       </label>
       <div class="collapsible--text">
@@ -75,6 +84,11 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
       padding: 0.5rem 0.4rem;
       font-size: $sidebar-btn-menu-font;
       background: $sidebar-color;
+
+      & img {
+        height: $sidebar-btn-menu-font;
+        color: $text-color;
+      }
 
       &:hover {
         color: $btn-hover-color;

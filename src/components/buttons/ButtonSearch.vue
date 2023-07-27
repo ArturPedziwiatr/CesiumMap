@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+defineEmits(['model-value'])
 </script>
 
 <template>
   <div class="wrapper">
     <Icon :icon="['fas', 'magnifying-glass']" />
-    <input type="search" placeholder="Search...">
+    <input type="search" placeholder="Search..." @change="$emit('model-value', $event)">
   </div>
 </template>
 

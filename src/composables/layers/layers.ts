@@ -7,6 +7,7 @@ import {
 import { inject, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
+import { ILayer, ILayerCreate } from '@Func/layers/ILayers'
 
 const layersBox = new Map<string, ILayer>()
 
@@ -16,6 +17,8 @@ export default function useDynamicLayers() {
   const layers = ref<WmsLayerSummary[]>()
 
   const addWMSServer = async (input: string) => {
+    console.log(input)
+    
     try {
       loading.value = true
       const endpoint = await new WmsEndpoint(input).isReady()
