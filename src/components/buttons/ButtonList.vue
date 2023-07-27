@@ -61,7 +61,7 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 
       &:checked {
         & ~ .collapsible--text {
-          max-height: 300px;
+          max-height: 500px;
           opacity: 1;
           top: 0;
           padding-left: 16px;
