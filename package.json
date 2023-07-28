@@ -29,6 +29,7 @@
     "cesium": "^1.107.0",
     "element-plus": "^2.3.8",
     "lodash": "^4.17.21",
+    "parser-gml": "^0.2.2",
     "three": "^0.154.0",
     "vue": "^3.3.4",
     "wms-client": "^3.0.1",

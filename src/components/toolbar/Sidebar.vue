@@ -157,7 +157,11 @@ const sidebarAction = () => {
 
   :deep(.v-enter-active),
   :deep(.v-leave-active) {
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
+  }
+
+  :deep(.v-enter-active) {
+    transition-delay: 0.3s;
   }
 
   :deep(.v-enter-from),

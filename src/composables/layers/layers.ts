@@ -3,47 +3,50 @@ import {
   ImageryLayer,
   Viewer,
   WebMapServiceImageryProvider,
+  DefaultProxy,
 } from 'cesium'
 import { inject, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
-import { ILayerSet, ILayerCreate } from '@Interface/layers/ILayerSet'
+import { ILayerSet } from '@Interface/layers/ILayerSet'
+import { uniqueId } from 'lodash'
 
-const layersBox = new Map<string, ImageryLayer>()
+const layersBox = ref(new Map<string, ImageryLayer>())
 
 export default function useDynamicLayers() {
-  const viewer = inject<Viewer>(MapsType.Viewer)!
-  const loading = ref(false)
-  const layers = ref<ILayerSet[]>([])
-  const size = ref(layersBox.size)
-  const url = ref('')
-  const alias = ref('')
+  const viewer = inject<Viewer>(MapsType.Viewer)!,
+    loading = ref(false),
+    layers = ref<ILayerSet[]>([]),
+    size = ref(layersBox.value.size),
+    url = ref(''),
+    refresToken = ref(''),
+    error = ref('')
 
   const addWMSServer = async (input: string) => {
     try {
       url.value = input
+      error.value = ''
       layers.value.length = 0 
       loading.value = true
       const endpoint = await new WmsEndpoint(input).isReady() 
       reduceLayers(endpoint.getLayers())
-      loading.value = false   
-    } catch (err) {
-      console.error(err)
-      ElNotification({
-        title: 'Error',
-        message: 'Cannot conected with WMS Server',
-        type: 'error',
-      })
+      loading.value = false
+      refresToken.value = uniqueId()
+    } catch {
+      loading.value = false
+      error.value = 'Cannot conected with the WMS Server'
     }
   }
 
-  const addLayer = async (input: string) => {
+  const addLayer = async (input: string, aliasWMS: string) => {
     try {
-      if (!layersBox.has(alias.value)) {
+      if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
           new WebMapServiceImageryProvider({
             url: url.value,
             layers: input,
+            //@ts-expect-error
+            proxy: new DefaultProxy(`/${url.value}/`),
             parameters: {
               transparent: true,
               format: 'image/png',
@@ -52,7 +55,7 @@ export default function useDynamicLayers() {
           {}
         )
         viewer.imageryLayers.add(layer)
-        layersBox.set(alias.value, layer)
+        layersBox.value.set(aliasWMS, layer)
       }
     } catch (err) {
       console.error(err)
@@ -64,9 +67,9 @@ export default function useDynamicLayers() {
     }
   }
 
-  const getAllLayers = () => Array.from(layersBox.keys())
-  const getAll = () => layers.value
-  const setAlias = (al: string) => alias.value = al
+  const getAllLayers = () => Array.from(layersBox.value.keys())
+  const getWMSLayers = () => layers.value
+  const ifLayerIsActive = (alias: string) => (layersBox.value.get(alias)?.show)
 
   const reduceLayers = (wmsLayer: WmsLayerSummary[]) => {
     wmsLayer.forEach(elem => {
@@ -74,26 +77,26 @@ export default function useDynamicLayers() {
         name: elem.name,
         title: elem.title
       })
-      else {
-        alias.value = elem.title
-      } 
       if (elem.children) reduceLayers(elem.children)
     })
   } 
 
   const visibleLayres = (key: string) => {
-    if (layersBox.has(key)) {
-      const layer = layersBox.get(key)!
+    if (layersBox.value.has(key)) {
+      const layer = layersBox.value.get(key)!
       layer.show = !layer.show
     }
   }
 
 
-  const addLayerStrategy = (lay: string[], group: boolean) => {
+  const addLayerStrategy = (lay: string[], group: boolean, alias?: string) => {
+    const layer = lay.join(', ')
     if (group) {
-      addLayer(lay.join(', '))
+      addLayer(layer, alias ||`[${layer}]`)
     } else {
-
+      lay.forEach(elem => {
+        addLayer(elem, alias ? `${alias} [${elem}]` : elem)
+      })
     }
     layers.value.length = 0
   }
@@ -105,7 +108,9 @@ export default function useDynamicLayers() {
     addLayerStrategy,
     addWMSServer,
     loading,
-    getAll,
-    setAlias
+    getWMSLayers,
+    ifLayerIsActive,
+    refresToken,
+    error
   }
 }

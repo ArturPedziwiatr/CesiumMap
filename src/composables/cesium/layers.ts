@@ -9,10 +9,10 @@ import {
   WebMapServiceImageryProvider,
   WebMapTileServiceImageryProvider,
 } from 'cesium'
-import { inject } from 'vue'
+import { inject, ref } from 'vue'
 import { ILayerCreate, ILayer, ILayerProviderCreate } from './ILayers'
 
-const layersBox = new Map<string, ILayer>()
+const layersBox = ref(new Map<string, ILayer>())
 
 export default function useLayers() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
@@ -20,7 +20,7 @@ export default function useLayers() {
   const addLayer = async (input: ILayerCreate) => {
     try {
       const { url, layers, alias, flyTo } = input
-      if (!layersBox.has(layers)) {
+      if (!layersBox.value.has(layers)) {
         const layer = new ImageryLayer(
           new WebMapServiceImageryProvider({
             url,
@@ -34,7 +34,7 @@ export default function useLayers() {
         )
         layer.show = false
         viewer.imageryLayers.add(layer)
-        layersBox.set(alias, { layer, flyTo })
+        layersBox.value.set(alias, { layer, flyTo })
       }
     } catch (err) {
       console.error(err)
@@ -44,7 +44,7 @@ export default function useLayers() {
   const addLayerProvider = async (input: ILayerProviderCreate) => {
     try {
       const { url, layer, alias, flyTo, times, credit } = input
-      if (!layersBox.has(alias)) {
+      if (!layersBox.value.has(alias)) {
         const provider = new ImageryLayer(
           new WebMapTileServiceImageryProvider({
             url,
@@ -61,19 +61,19 @@ export default function useLayers() {
         )
         provider.show = false
         viewer.imageryLayers.add(provider)
-        layersBox.set(alias, { layer: provider, flyTo })
+        layersBox.value.set(alias, { layer: provider, flyTo })
       }
     } catch (err) {
       console.error(err)
     }
   }
 
-  const getLayers = () => Array.from(layersBox.keys())
-  const size = () => layersBox.size
+  const getLayers = () => Array.from(layersBox.value.keys())
+  const size = () => layersBox.value.size
 
   const visibleLayres = (key: string) => {
-    if (layersBox.has(key)) {
-      const { layer, flyTo } = layersBox.get(key)!
+    if (layersBox.value.has(key)) {
+      const { layer, flyTo } = layersBox.value.get(key)!
       layer.show = !layer.show
 
       if (layer.show && flyTo) {

@@ -17,9 +17,13 @@ defineProps({
   src: {
     type: String,
     reguired: false
+  },
+  back: {
+    type: Boolean,
+    default: false
   }
 })
-
+defineEmits(['backTo'])
 const expanded = () => document.querySelector('.sidebar')?.removeAttribute('collapsed')
 </script>
 
@@ -31,6 +35,12 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
         <img v-if="src" :src="src" alt="logo" />
         <Icon v-else-if="icon" :icon="['fas', icon]" />
         <p>{{ text }}</p>
+        <Icon
+          v-if="back"
+          :icon="['fas', 'right-to-bracket']"
+          class="icon-back"
+          @click="$emit('backTo')"
+        />
       </label>
       <div class="collapsible--text">
         <slot />
@@ -100,6 +110,11 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 
       & svg {
         font-size: $sidebar-icon-menu-font;
+      }
+
+      & .icon-back {
+        margin-left: auto;
+        cursor: alias;
       }
     }
   }

@@ -1,30 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 const props = defineProps({
-  type: {
-    type: String,
-    required: false,
-    default: 'checkbox',
+  value: {
+    type: Boolean,
+    default: false,
+  },
+  check: {
+    type: Boolean,
+    default: true,
   },
 })
-const btn = ref<HTMLElement>()
-const emit = defineEmits(['onClick'])
-const onClick = (event: MouseEvent) => {
-  if (!btn.value) return
-  if (props.type === 'checkbox') {
-    if (btn.value.getAttribute('active')) {
-      btn.value.removeAttribute('active')
-    } else {
-      btn.value.setAttribute('active', 'true')
-    }
-  }
 
-  emit('onClick', event)
-}
+const emit = defineEmits(['onClick'])
+const status = ref(props.value)
 </script>
 
 <template>
-  <button ref="btn" @click="onClick($event)">
+  <button :active="status && check" @click="status = !status; emit('onClick', { ...$event, status })">
     <slot />
   </button>
 </template>
@@ -48,7 +41,7 @@ button {
     color: $text-color;
   }
 
-  &[active],
+  &[active=true],
   &:hover {
     background: $primary-color;
     color: $toggle-color;
