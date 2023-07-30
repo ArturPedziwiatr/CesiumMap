@@ -28,7 +28,6 @@
     "lodash": "^4.17.21",
     "three": "^0.154.0",
     "vue": "^3.3.4",
-    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "@types/node": "^20.4.1",
