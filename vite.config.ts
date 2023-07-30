@@ -8,7 +8,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     mode,
-    plugins: [vue(), cesium()],
+    plugins: [
+      vue(),
+      cesium()
+    ],
     define: {
       __CESIUM_TOKEN__: JSON.stringify(env.VITE_CESIUM_TOKEN),
       __GOOGLE_TOKEN__: JSON.stringify(env.VITE_GOOGLE_MAPS_TOKEN),

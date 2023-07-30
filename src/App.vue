@@ -14,16 +14,18 @@ import global from '@Global/global'
 import AuthSection from '@/auth/AuthSection.vue'
 import { WfsEndpoint } from '@camptocamp/ogc-client'
 import axios from 'axios'
-import { getGeoJson } from 'parser-gml'
+import useParser from '@Func/parser/parser.ts'
+// import { getGeoJson } from 'parser-gml'
 // import PotreeGenerator from '@/potree/PotreeGenerator.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
 const viewerConstruct = ref(false)
 const viewer = ref()
+const parser = useParser()
 
 onMounted(() => {
-  viewer.value = 
+  viewer.value =
     new Viewer('cesiumMap', {
       homeButton: false,
       baseLayerPicker: false,
@@ -33,8 +35,8 @@ onMounted(() => {
       useBrowserRecommendedResolution: false,
       skyAtmosphere: false,
       terrain: Terrain.fromWorldTerrain({
-        requestWaterMask : true,
-        requestVertexNormals : true
+        requestWaterMask: true,
+        requestVertexNormals: true
       }),
     })
 
@@ -69,16 +71,20 @@ const inita = async () => {
     const endpoint = await new WfsEndpoint('https://wfs.geonorge.no/skwms1/wfs.akvakulturlokaliteter?service=wfs&request=getcapabilities').isReady();
     const info = endpoint.getFeatureTypes()
     const url = endpoint.getFeatureUrl('app:AkvakulturFlate', {})
-    const asd = await axios.get(url)
-    const aasdf = getGeoJson(asd.data)
-    console.log(aasdf);
+    const asd = await axios
+      .get(url)
+      .then(x => x.data)
+  setTimeout(() => {
+    parser.xmlToJson(asd)
+  }, 3000);    
+   //const qwerr = parseString(asd, enti.value)
+   console.log(info);
     // var wfs = new WebFeatureServiceImageryProvider({
     //   url : "http://localhost:8080/geoserver/xxxxxx",
     //   layers : "xxxxxx",
     //   viewer : viewer.value
     //   });
-    console.log(info);
-    
+
   } catch (err) { console.error(err) }
 }
 inita()

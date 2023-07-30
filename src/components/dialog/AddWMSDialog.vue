@@ -96,7 +96,7 @@ const emit = defineEmits(['close'])
     justify-content: space-between;
 
     & .temp {
-      displa: block;
+      display: block;
     }
   }
 }

@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:roll": "rollup -c -w",
     "build": "vue-tsc && vite build",
+    "build:roll": "rollup -c",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
@@ -25,6 +27,7 @@
     "@types/cesium": "^1.70.0",
     "@types/lodash": "^4.14.196",
     "@types/three": "^0.154.0",
+    "@types/xml2js": "^0.4.11",
     "axios": "^1.4.0",
     "cesium": "^1.107.0",
     "element-plus": "^2.3.8",
@@ -32,8 +35,7 @@
     "parser-gml": "^0.2.2",
     "three": "^0.154.0",
     "vue": "^3.3.4",
-    "wms-client": "^3.0.1",
-    "xml-js": "^1.6.11"
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@types/node": "^20.4.1",
