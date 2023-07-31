@@ -8,7 +8,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     mode,
-    plugins: [vue(), cesium()],
+    plugins: [
+      vue(),
+      cesium()
+    ],
     define: {
       __CESIUM_TOKEN__: JSON.stringify(env.VITE_CESIUM_TOKEN),
       __GOOGLE_TOKEN__: JSON.stringify(env.VITE_GOOGLE_MAPS_TOKEN),
@@ -31,6 +34,7 @@ export default defineConfig(({ mode }) => {
         '@Icon': fileURLToPath(new URL('./src/assets/icon', import.meta.url)),
         '@Func': fileURLToPath(new URL('./src/composables', import.meta.url)),
         '@Global': fileURLToPath(new URL('./src/global', import.meta.url)),
+        '@Interface': fileURLToPath(new URL('./src/interface', import.meta.url)),
       },
     },
     server: {

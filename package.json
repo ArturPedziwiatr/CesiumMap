@@ -8,12 +8,15 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:roll": "rollup -c -w",
     "build": "vue-tsc && vite build",
+    "build:roll": "rollup -c",
     "preview": "vite preview",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src"
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.2.1",
+    "@camptocamp/ogc-client": "^1.0.0",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
@@ -22,16 +25,21 @@
     "@pnext/three-loader": "^0.2.9",
     "@three-ts/orbit-controls": "^1.4.7",
     "@types/cesium": "^1.70.0",
+    "@types/lodash": "^4.14.196",
     "@types/three": "^0.154.0",
+    "@types/xml2js": "^0.4.11",
     "axios": "^1.4.0",
     "cesium": "^1.107.0",
+    "element-plus": "^2.3.8",
     "lodash": "^4.17.21",
+    "parser-gml": "^0.2.2",
     "three": "^0.154.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {
     "@types/node": "^20.4.1",
     "@vitejs/plugin-vue": "^4.2.3",
+    "font-gis": "^1.0.5",
     "less": "^4.1.3",
     "less-loader": "^11.1.3",
     "sass": "^1.63.6",

@@ -1,39 +1,17 @@
 <script setup lang="ts">
-import ButtonGroup from '@/buttons/ButtonGroup.vue'
-import ButtonList from '@/buttons/ButtonList.vue'
 import ButtonSearch from '@/buttons/ButtonSearch.vue'
-import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
-import useLayers from '@Func/cesium/layers'
-import use3DTileset from '@Func/tileset3D/3DTileset'
-import useTerrains from '@Func/terrain/terrain'
 import { useAuth0 } from '@auth0/auth0-vue'
 import ButtonLogin from '@/buttons/ButtonLogin.vue'
-import AuthSections from '@/auth/AuthSections.vue'
 import { ref } from 'vue'
-import useGeoJSONLoader from '@Func/geojson/GeoJSONLoader'
+import PrimarySidebar from '@/toolbar/PrimarySidebar.vue'
+import LayersSidebar from '@/toolbar/LayersSidebar.vue'
+import useSidebar, { SidebarsType } from '@Func/sidebar/sidebar.ts'
 
 const { isAuthenticated, user } = useAuth0(),
-  actions = useCesiumPresentation(),
-  tileset = use3DTileset(),
-  layers = useLayers(),
-  sources = useGeoJSONLoader(),
-  maps = useTerrains(),
   sidebar = ref<HTMLElement>(),
-  toggle = ref<HTMLElement>()
+  toggle = ref<HTMLElement>(),
+  menu = useSidebar()
 
-const activeLayer = (
-  event: MouseEvent,
-  key: string,
-  layer: (key: string) => void
-) => {
-  const btn = event.target as HTMLElement
-  if (btn.getAttribute('active')) {
-    btn.removeAttribute('active')
-  } else {
-    btn.setAttribute('active', 'true')
-  }
-  layer(key)
-}
 const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
 
 const sidebarAction = () => {
@@ -65,110 +43,10 @@ const sidebarAction = () => {
 
     <ButtonSearch class="search" />
     <div class="menu">
-      <button class="primary" @click="actions.bumpToHome()">
-        <Icon :icon="['fas', 'house']" />
-        <p>View Home</p>
-      </button>
-      <ButtonList icon="scroll" text="Presentation">
-        <button @click="actions.importFlyingData()">Points generate</button>
-        <button @click="actions.createAnimate()">Animation generate</button>
-        <button @click="actions.createBuild()">Generate building</button>
-        <button @click="actions.bumpToSweden()">Bump to Sweden</button>
-      </ButtonList>
-      <AuthSections>
-        <ButtonList icon="layer-group" text="Layers">
-          <button
-            v-for="layer of layers.getLayers()"
-            @click="e => activeLayer(e, layer, layers.visibleLayres)"
-          >
-            {{ layer }}
-          </button>
-          <button
-            v-for="source of sources.getSources()"
-            @click="e => activeLayer(e, source, sources.visibleSource)"
-          >
-            {{ source }}
-          </button>
-        </ButtonList>
-        <ButtonList icon="mosque" text="3D Buildings">
-          <div v-if="tileset.getLoaded()">
-            <button
-              v-for="tile of tileset.getTileset()"
-              @click="e => activeLayer(e, tile, tileset.visibleTileset)"
-            >
-              {{ tile }}
-            </button>
-          </div>
-        </ButtonList>
-        <ButtonList icon="earth-americas" text="Terrain">
-          <ButtonGroup
-            type="terrain"
-            @on-change="(e: string) => maps.visibleTerrain(e)"
-          >
-            <button terrain="off" active>OFF</button>
-            <button v-for="map of maps.getTerrains()" :terrain="map">
-              {{ map }}
-            </button>
-          </ButtonGroup>
-        </ButtonList>
-        <ButtonList icon="circle-info" text="Instructions">
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  <img
-                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseLeft.svg"
-                    width="48"
-                    height="48"
-                  />
-                </td>
-                <td>
-                  <div class="cesium-navigation-help-pan">Pan view</div>
-                  <div class="cesium-navigation-help-details">
-                    Left click + drag
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img
-                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseRight.svg"
-                    width="48"
-                    height="48"
-                  />
-                </td>
-                <td>
-                  <div class="cesium-navigation-help-zoom">Zoom view</div>
-                  <div class="cesium-navigation-help-details">
-                    Right click + drag, or
-                  </div>
-                  <div class="cesium-navigation-help-details">
-                    Mouse wheel scroll
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <img
-                    src="http://localhost:3000/cesium/Widgets/Images/NavigationHelp/MouseMiddle.svg"
-                    width="48"
-                    height="48"
-                  />
-                </td>
-                <td>
-                  <div class="cesium-navigation-help-rotate">Rotate view</div>
-                  <div class="cesium-navigation-help-details">
-                    Middle click + drag, or
-                  </div>
-                  <div class="cesium-navigation-help-details">
-                    CTRL + Left/Right click + drag
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </ButtonList>
-      </AuthSections>
+      <Transition>
+        <PrimarySidebar v-if="menu.activeSidebar.value === SidebarsType.PRIMARY" />
+        <LayersSidebar v-else-if="menu.activeSidebar.value === SidebarsType.LAYERS" />
+      </Transition>
     </div>
     <ButtonLogin class="btn--login" />
 
@@ -258,50 +136,6 @@ const sidebarAction = () => {
     margin-top: 1rem;
     width: 90%;
     margin: 0 auto;
-
-    & table {
-      margin-left: -16px;
-    }
-
-    & .cesium-navigation-help-details {
-      font-size: 12px;
-      color: $text-color;
-    }
-
-    & button {
-      cursor: pointer;
-      width: 100%;
-      background: transparent;
-      border: none;
-      border-radius: 4px;
-      transition: $tran-03;
-      text-align: left;
-      display: flex;
-      padding: 0.5rem 0.4rem;
-      margin: 0.3rem 0;
-      color: $text-color;
-
-      &.primary {
-        margin-top: 8px;
-        color: $text-color;
-      }
-
-      &[active],
-      &:hover {
-        background: $primary-color;
-        color: $toggle-color;
-      }
-
-      & svg {
-        font-size: $sidebar-icon-menu-font;
-      }
-
-      & p {
-        font-size: $sidebar-btn-menu-font;
-        font-weight: $weight-6;
-        margin-left: 1rem;
-      }
-    }
   }
 
   &[collapsed=true] {
@@ -319,6 +153,25 @@ const sidebarAction = () => {
 
   & .btn--login {
     margin-top: auto;
+  }
+
+  :deep(.v-enter-active),
+  :deep(.v-leave-active) {
+    transition: opacity 0.3s ease;
+  }
+
+  :deep(.v-enter-active) {
+    transition-delay: 0.3s;
+  }
+
+  :deep(.v-enter-from),
+  :deep(.v-leave-to) {
+    opacity: 0;
+  }
+
+  :deep(.v-enter-to),
+  :deep(.v-leave-from) {
+    opacity: 1;
   }
 }
 </style>

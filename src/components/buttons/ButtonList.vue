@@ -1,27 +1,46 @@
 <script setup lang="ts">
-import _ from 'lodash'
-const id = _.uniqueId()
+import { uniqueId } from 'lodash'
+const id = uniqueId()
 defineProps({
   icon: {
     type: String,
-    required: true,
+    required: false,
   },
   text: {
     type: String,
     required: true,
   },
+  checked: {
+    type: Boolean,
+    default: false
+  },
+  src: {
+    type: String,
+    reguired: false
+  },
+  back: {
+    type: Boolean,
+    default: false
+  }
 })
-
+defineEmits(['backTo'])
 const expanded = () => document.querySelector('.sidebar')?.removeAttribute('collapsed')
 </script>
 
 <template>
   <div class="wrapper" @click="expanded">
     <div class="collapsible">
-      <input type="checkbox" :id="`collapsible-${id}`" />
+      <input type="checkbox" :id="`collapsible-${id}`" :checked="checked" />
       <label :for="`collapsible-${id}`">
-        <Icon :icon="['fas', icon]" />
+        <img v-if="src" :src="src" alt="logo" />
+        <Icon v-else-if="icon" :icon="['fas', icon]" />
         <p>{{ text }}</p>
+        <Icon
+          v-if="back"
+          :icon="['fas', 'right-to-bracket']"
+          class="icon-back"
+          @click="$emit('backTo')"
+        />
       </label>
       <div class="collapsible--text">
         <slot />
@@ -52,7 +71,7 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 
       &:checked {
         & ~ .collapsible--text {
-          max-height: 300px;
+          max-height: 500px;
           opacity: 1;
           top: 0;
           padding-left: 16px;
@@ -76,6 +95,11 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
       font-size: $sidebar-btn-menu-font;
       background: $sidebar-color;
 
+      & img {
+        height: $sidebar-btn-menu-font;
+        color: $text-color;
+      }
+
       &:hover {
         color: $btn-hover-color;
       }
@@ -86,6 +110,11 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 
       & svg {
         font-size: $sidebar-icon-menu-font;
+      }
+
+      & .icon-back {
+        margin-left: auto;
+        cursor: alias;
       }
     }
   }

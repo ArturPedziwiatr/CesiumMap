@@ -9,6 +9,7 @@
   --toggle-color: #DDD;
   --text-color: #707070;
   --text-header-color: #707070;
+  --error-msg: #c01f1f;
 }
 body.dark {
   --body-color: #18191A;
@@ -31,6 +32,7 @@ $toggle-color: var(--toggle-color);
 $text-color: var(--text-color);
 $text-header-color: var(--text-header-color);
 $btn-login-hover-color: var(--btn-login-hover-color);
+$error-msg-color: var(--error-msg);
 
 // ===== Transition ===== \\
 $tran-02: all 0.2s ease;
@@ -44,11 +46,13 @@ $sidebar-width-expanded: 250px;
 
 
 // ===== FontSize ===== \\
-$sidebar-icon-menu-font: 22px;
-$sidebar-btn-menu-font: 16px;
+$sidebar-icon-menu-font: 18px;
+$sidebar-btn-menu-font: 14px;
+$error-msg-font: 12px;
 
 // ===== FontWeight ===== \\
 $weight-6: 600;
+$weight-5: 500;
 
 @media (prefers-color-scheme: light) {
   $color-toolbar: #213547;
