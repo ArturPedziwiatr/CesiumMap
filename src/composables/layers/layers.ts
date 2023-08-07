@@ -4,6 +4,7 @@ import {
   Viewer,
   WebMapServiceImageryProvider,
   DefaultProxy,
+  Resource,
 } from 'cesium'
 import { inject, ref } from 'vue'
 import { ElNotification } from 'element-plus'
@@ -18,17 +19,17 @@ export default function useDynamicLayers() {
     loading = ref(false),
     layers = ref<ILayerSet[]>([]),
     size = ref(layersBox.value.size),
-    url = ref(''),
+    url = ref('https://wms.geonorge.no/skwms1/wms.adm_enheter_historisk?'),
     refresToken = ref(''),
     error = ref('')
 
   const addWMSServer = async (input: string) => {
     try {
-      url.value = input
+      url.value = input.split('?')[0]
       error.value = ''
-      layers.value.length = 0 
+      layers.value.length = 0
       loading.value = true
-      const endpoint = await new WmsEndpoint(input).isReady() 
+      const endpoint = await new WmsEndpoint(input).isReady()
       reduceLayers(endpoint.getLayers())
       loading.value = false
       refresToken.value = uniqueId()
@@ -40,13 +41,13 @@ export default function useDynamicLayers() {
 
   const addLayer = async (input: string, aliasWMS: string) => {
     try {
+      console.log(url.value);
+      
       if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
           new WebMapServiceImageryProvider({
             url: url.value,
             layers: input,
-            //@ts-expect-error
-            proxy: new DefaultProxy(`/${url.value}/`),
             parameters: {
               transparent: true,
               format: 'image/png',
@@ -67,19 +68,43 @@ export default function useDynamicLayers() {
     }
   }
 
+  const addLayerTmp = async () => {
+    try {
+      if (!layersBox.value.has('wertwert')) {
+        const layer = new ImageryLayer(
+          new WebMapServiceImageryProvider({
+            url: 'https://wms.geonorge.no/skwms1/wms.adm_enheter_historisk?',
+            layers: 'fylker_2017',
+            parameters: {
+              transparent: true,
+              format: 'image/png',
+            },
+          }),
+          {}
+        )
+        layer.show = false
+        viewer.imageryLayers.add(layer)
+        layersBox.value.set('wertwert', layer)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   const getAllLayers = () => Array.from(layersBox.value.keys())
   const getWMSLayers = () => layers.value
-  const ifLayerIsActive = (alias: string) => (layersBox.value.get(alias)?.show)
+  const ifLayerIsActive = (alias: string) => layersBox.value.get(alias)?.show
 
   const reduceLayers = (wmsLayer: WmsLayerSummary[]) => {
     wmsLayer.forEach(elem => {
-      if (elem.name) layers.value.push({
-        name: elem.name,
-        title: elem.title
-      })
+      if (elem.name)
+        layers.value.push({
+          name: elem.name,
+          title: elem.title,
+        })
       if (elem.children) reduceLayers(elem.children)
     })
-  } 
+  }
 
   const visibleLayres = (key: string) => {
     if (layersBox.value.has(key)) {
@@ -88,11 +113,10 @@ export default function useDynamicLayers() {
     }
   }
 
-
   const addLayerStrategy = (lay: string[], group: boolean, alias?: string) => {
-    const layer = lay.join(', ')
+    const layer = lay.length > 1 ? lay.join(', ') : lay[0]
     if (group) {
-      addLayer(layer, alias ||`[${layer}]`)
+      addLayer(layer, alias || `[${layer}]`)
     } else {
       lay.forEach(elem => {
         addLayer(elem, alias ? `${alias} [${elem}]` : elem)
@@ -100,6 +124,12 @@ export default function useDynamicLayers() {
     }
     layers.value.length = 0
   }
+
+  const init = () => {
+    addLayerTmp()
+  }
+
+  // init()
 
   return {
     size,
@@ -111,6 +141,6 @@ export default function useDynamicLayers() {
     getWMSLayers,
     ifLayerIsActive,
     refresToken,
-    error
+    error,
   }
 }

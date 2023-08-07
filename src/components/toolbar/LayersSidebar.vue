@@ -8,13 +8,15 @@ import { ref } from 'vue'
 import useSidebar, { SidebarsType } from '@Func/sidebar/sidebar'
 import AddWMSDialog from '@/dialog/AddWMSDialog.vue'
 import { ElDialog } from 'element-plus'
+import useLayers from '@Func/cesium/layers.ts'
 
 const sources = useGeoJSONLoader(),
   dynamicLayres = useDynamicLayers(),
   menu = useSidebar(),
   dialogVisible = ref(false),
   component = ref(),
-  title = ref('')
+  title = ref(''),
+  tmpLay =  useLayers()
 
 const openDialog = (arg1: any, arg2: string) => {
   component.value = arg1
@@ -33,6 +35,14 @@ const openDialog = (arg1: any, arg2: string) => {
       @back-to="menu.changeSidebar(SidebarsType.PRIMARY)"
     >
       <div :key="dynamicLayres.refresToken.value">
+        <ButtonCustom
+          v-for="layer of tmpLay.getLayers()"
+          :key="layer"
+          :value="dynamicLayres.ifLayerIsActive(layer)"
+          @on-click="tmpLay.visibleLayres(layer)"
+        >
+          {{ layer }}
+        </ButtonCustom>
         <ButtonCustom
           v-for="layer of dynamicLayres.getAllLayers()"
           :key="layer"
