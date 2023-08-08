@@ -3,22 +3,35 @@ import ButtonSearch from '@/buttons/ButtonSearch.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
 import ButtonLogin from '@/buttons/ButtonLogin.vue'
 import { ref } from 'vue'
-import PrimarySidebar from '@/toolbar/PrimarySidebar.vue'
-import LayersSidebar from '@/toolbar/LayersSidebar.vue'
-import useSidebar, { SidebarsType } from '@Func/sidebar/sidebar.ts'
+import ButtonGroup from '@/buttons/ButtonGroup.vue'
+import ButtonList from '@/buttons/ButtonList.vue'
+import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
+import use3DTileset from '@Func/tileset3D/3DTileset'
+import useTerrains from '@Func/terrain/terrain'
+import AuthSection from '@/auth/AuthSection.vue'
+import ButtonCustom from '@/buttons/ButtonCustom.vue'
+import InstructionsComponent from '@/toolbar/additional/InstructionsComponent.vue'
 
 const { isAuthenticated, user } = useAuth0(),
   sidebar = ref<HTMLElement>(),
   toggle = ref<HTMLElement>(),
-  menu = useSidebar()
+  actions = useCesiumPresentation(),
+  tileset = use3DTileset(),
+  maps = useTerrains()
 
 const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
 
 const sidebarAction = () => {
   if (!sidebar.value) return
-  if(sidebar.value.getAttribute('collapsed'))
+  if (sidebar.value.getAttribute('collapsed'))
     sidebar.value.removeAttribute('collapsed')
-  else sidebar.value.setAttribute('collapsed', 'true')
+  else {
+    sidebar.value.setAttribute('collapsed', 'true')
+    const input = document.querySelectorAll(
+      '.sidebar input[type="checkbox"]:checked'
+    )
+    Array.from(input).forEach((elem: any) => (elem.checked = false))
+  }
 }
 </script>
 
@@ -43,13 +56,57 @@ const sidebarAction = () => {
 
     <ButtonSearch class="search" />
     <div class="menu">
-      <Transition>
-        <PrimarySidebar v-if="menu.activeSidebar.value === SidebarsType.PRIMARY" />
-        <LayersSidebar v-else-if="menu.activeSidebar.value === SidebarsType.LAYERS" />
-      </Transition>
+      <ButtonCustom class="primary" @on-click="actions.bumpToHome()">
+        <Icon :icon="['fas', 'house']" />
+        <p>View Home</p>
+      </ButtonCustom>
+      <ButtonList icon="scroll" text="Presentation">
+        <ButtonCustom @on-click="actions.importFlyingData()"
+          >Points generate</ButtonCustom
+        >
+        <ButtonCustom @on-click="actions.createAnimate()"
+          >Animation generate</ButtonCustom
+        >
+        <ButtonCustom @on-click="actions.createBuild()"
+          >Generate building</ButtonCustom
+        >
+        <ButtonCustom @on-click="actions.bumpToSweden()"
+          >Bump to Sweden</ButtonCustom
+        >
+      </ButtonList>
+      <AuthSection>
+        <ButtonList icon="mosque" text="3D Buildings">
+          <div v-if="tileset.getLoaded()">
+            <ButtonCustom
+              v-for="tile of tileset.getTileset()"
+              :key="tile"
+              @on-click="tileset.visibleTileset(tile)"
+            >
+              {{ tile }}
+            </ButtonCustom>
+          </div>
+        </ButtonList>
+        <ButtonList icon="earth-americas" text="Terrain">
+          <ButtonGroup
+            type="terrain"
+            @on-change="(e: string) => maps.visibleTerrain(e)"
+          >
+            <ButtonCustom type="off" terrain="off" active>OFF</ButtonCustom>
+            <ButtonCustom
+              type="off"
+              v-for="map of maps.getTerrains()"
+              :terrain="map"
+            >
+              {{ map }}
+            </ButtonCustom>
+          </ButtonGroup>
+        </ButtonList>
+        <ButtonList icon="circle-info" text="Instructions">
+          <InstructionsComponent />
+        </ButtonList>
+      </AuthSection>
     </div>
     <ButtonLogin class="btn--login" />
-
   </div>
 </template>
 
@@ -138,12 +195,13 @@ const sidebarAction = () => {
     margin: 0 auto;
   }
 
-  &[collapsed=true] {
+  &[collapsed='true'] {
     width: 78px;
 
     & h1,
     & p {
-      opacity: 0
+      display: none;
+      opacity: 0;
     }
 
     & .toggle {
@@ -153,25 +211,6 @@ const sidebarAction = () => {
 
   & .btn--login {
     margin-top: auto;
-  }
-
-  :deep(.v-enter-active),
-  :deep(.v-leave-active) {
-    transition: opacity 0.3s ease;
-  }
-
-  :deep(.v-enter-active) {
-    transition-delay: 0.3s;
-  }
-
-  :deep(.v-enter-from),
-  :deep(.v-leave-to) {
-    opacity: 0;
-  }
-
-  :deep(.v-enter-to),
-  :deep(.v-leave-from) {
-    opacity: 1;
   }
 }
 </style>

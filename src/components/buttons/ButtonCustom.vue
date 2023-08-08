@@ -49,12 +49,20 @@ button {
 
   & :deep(svg) {
     font-size: $sidebar-icon-menu-font;
+    .sidebar[collapsed=true] & {
+      margin: 0 auto;
+    }
   }
 
   & :deep(p) {
     font-size: $sidebar-btn-menu-font;
     font-weight: $weight-6;
     margin-left: 1rem;
+    transition: $tran-04;
+
+    .sidebar[collapsed=true] & {
+      display: none;
+    }
   }
 }
 </style>

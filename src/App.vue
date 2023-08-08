@@ -1,27 +1,18 @@
 <script setup lang="ts">
 import { onMounted, provide, ref } from 'vue'
-import {
-  Ion,
-  Cartesian3,
-  Viewer,
-  Terrain
-} from 'cesium'
+import { Ion, Cartesian3, Viewer, Terrain } from 'cesium'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@/toolbar/Sidebar.vue'
 import { MapsType } from '@Enum/MapType.ts'
 import global from '@Global/global'
-import AuthSection from '@/auth/AuthSection.vue'
-// import { WfsEndpoint } from '@camptocamp/ogc-client'
-// import useParser from '@Func/parser/parser.ts'
-// import { getGeoJson } from 'parser-gml'
-// import PotreeGenerator from '@/potree/PotreeGenerator.vue'
+import LayersSidebar from '@/toolbar/LayersSidebar.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
 const viewerConstruct = ref(false)
 const viewer = ref()
-// const parser = useParser()
+const layersActive = ref(false)
 
 onMounted(() => {
   viewer.value = new Viewer('cesiumMap', {
@@ -68,9 +59,11 @@ onMounted(() => {
   <div class="container">
     <div id="cesiumMap" class="container--map"></div>
     <Sidebar v-if="viewerConstruct" />
-    <AuthSection>
-      <!-- <PotreeGenerator /> -->
-    </AuthSection>
+    <button class="layers--button" @click="layersActive = !layersActive">
+      <p>Display</p>
+      <Icon :icon="['fas', 'layer-group']" />
+    </button>
+    <LayersSidebar v-if="layersActive" @close="layersActive = $event"/>
   </div>
 </template>
 
@@ -82,6 +75,36 @@ onMounted(() => {
     width: calc(100% - $sidebar-width-collapsed);
     height: 100vh;
     background: $body-color;
+  }
+
+  .layers--button {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    width: fit-content;
+    padding: 0.5rem 2rem;
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: $sidebar-color;
+    transition: $tran-04;
+
+    &:hover {
+      background-color: $btn-hover-color;
+
+      svg,
+      p {
+        color: $sidebar-color;
+      }
+    }
+
+    svg,
+    p {
+      color: $text-color;
+      font-weight: 550;
+    }
   }
 }
 </style>

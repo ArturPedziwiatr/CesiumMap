@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { uniqueId } from 'lodash'
-const id = uniqueId()
-defineProps({
+import { ref } from 'vue'
+
+const props = defineProps({
   icon: {
     type: String,
     required: false,
@@ -23,14 +24,19 @@ defineProps({
     default: false
   }
 })
+const id = uniqueId()
+const active = ref(props.checked)
 defineEmits(['backTo'])
-const expanded = () => document.querySelector('.sidebar')?.removeAttribute('collapsed')
+const expanded = () => {
+  if ((document.getElementById(`collapsible-${id}`) as any).checked === false) 
+    document.querySelector('.sidebar')?.removeAttribute('collapsed')
+}
 </script>
 
 <template>
   <div class="wrapper" @click="expanded">
     <div class="collapsible">
-      <input type="checkbox" :id="`collapsible-${id}`" :checked="checked" />
+      <input type="checkbox" :id="`collapsible-${id}`" v-model="active" />
       <label :for="`collapsible-${id}`">
         <img v-if="src" :src="src" alt="logo" />
         <Icon v-else-if="icon" :icon="['fas', icon]" />
@@ -106,6 +112,7 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
 
       & p {
         margin-left: 1rem;
+        transition: $tran-04;
       }
 
       & svg {
@@ -115,6 +122,18 @@ const expanded = () => document.querySelector('.sidebar')?.removeAttribute('coll
       & .icon-back {
         margin-left: auto;
         cursor: alias;
+      }
+    }
+  }
+
+  .sidebar[collapsed=true] & {
+    & .collapsible {
+      p {
+        display: none;
+      }
+
+      svg {
+        margin: 0 auto;
       }
     }
   }

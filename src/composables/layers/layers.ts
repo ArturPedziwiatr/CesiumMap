@@ -3,8 +3,6 @@ import {
   ImageryLayer,
   Viewer,
   WebMapServiceImageryProvider,
-  DefaultProxy,
-  Resource,
 } from 'cesium'
 import { inject, ref } from 'vue'
 import { ElNotification } from 'element-plus'
@@ -31,6 +29,8 @@ export default function useDynamicLayers() {
       loading.value = true
       const endpoint = await new WmsEndpoint(input).isReady()
       reduceLayers(endpoint.getLayers())
+      console.log(endpoint.getServiceInfo());
+      
       loading.value = false
       refresToken.value = uniqueId()
     } catch {
@@ -41,7 +41,7 @@ export default function useDynamicLayers() {
 
   const addLayer = async (input: string, aliasWMS: string) => {
     try {
-      console.log(url.value);
+      console.log(input);
       
       if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
@@ -65,29 +65,6 @@ export default function useDynamicLayers() {
         message: 'Cannot add layers',
         type: 'error',
       })
-    }
-  }
-
-  const addLayerTmp = async () => {
-    try {
-      if (!layersBox.value.has('wertwert')) {
-        const layer = new ImageryLayer(
-          new WebMapServiceImageryProvider({
-            url: 'https://wms.geonorge.no/skwms1/wms.adm_enheter_historisk?',
-            layers: 'fylker_2017',
-            parameters: {
-              transparent: true,
-              format: 'image/png',
-            },
-          }),
-          {}
-        )
-        layer.show = false
-        viewer.imageryLayers.add(layer)
-        layersBox.value.set('wertwert', layer)
-      }
-    } catch (err) {
-      console.error(err)
     }
   }
 
@@ -124,12 +101,6 @@ export default function useDynamicLayers() {
     }
     layers.value.length = 0
   }
-
-  const init = () => {
-    addLayerTmp()
-  }
-
-  // init()
 
   return {
     size,

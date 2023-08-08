@@ -6,12 +6,14 @@ export enum SidebarsType {
 }
 
 const activeSidebar = ref<SidebarsType>(SidebarsType.PRIMARY)
+const collapsed = ref(false)
 
 export default function useSidebar() {
   const changeSidebar = (arg: SidebarsType) => activeSidebar.value = arg
 
   return {
     changeSidebar,
-    activeSidebar
+    activeSidebar,
+    collapsed
   }
 }
