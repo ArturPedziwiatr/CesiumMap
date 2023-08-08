@@ -9,6 +9,7 @@ import { ElNotification } from 'element-plus'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
 import { ILayerSet } from '@Interface/layers/ILayerSet'
 import { uniqueId } from 'lodash'
+import { NorwayWMS } from '../../data/WMSList'
 
 const layersBox = ref(new Map<string, ImageryLayer>())
 
@@ -68,6 +69,8 @@ export default function useDynamicLayers() {
     }
   }
 
+  const getWMSGeonorge = () =>  (NorwayWMS.categories)
+
   const getAllLayers = () => Array.from(layersBox.value.keys())
   const getWMSLayers = () => layers.value
   const ifLayerIsActive = (alias: string) => layersBox.value.get(alias)?.show
@@ -111,6 +114,7 @@ export default function useDynamicLayers() {
     loading,
     getWMSLayers,
     ifLayerIsActive,
+    getWMSGeonorge,
     refresToken,
     error,
   }

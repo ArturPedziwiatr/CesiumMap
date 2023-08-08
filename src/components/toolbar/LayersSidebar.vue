@@ -7,6 +7,8 @@ import { ref } from 'vue'
 import AddWMSDialog from '@/dialog/AddWMSDialog.vue'
 import { ElDialog } from 'element-plus'
 import useLayers from '@Func/cesium/layers.ts'
+import ButtonList from '@/buttons/ButtonList.vue'
+import WMSFromCategory from '@/wms/WMSFromCategory.vue'
 
 const sources = useGeoJSONLoader(),
   dynamicLayres = useDynamicLayers(),
@@ -28,32 +30,12 @@ defineEmits(['close'])
   <AuthSection class="layers--sidebar">
     <div class="sidebar--title">
       <p>Layers</p>
-      <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)"/>
+      <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)" />
     </div>
-    <div :key="dynamicLayres.refresToken.value" class="layers--checkbox">
-      <ButtonCustom
-        v-for="layer of tmpLay.getLayers()"
-        :key="layer"
-        :value="dynamicLayres.ifLayerIsActive(layer)"
-        @on-click="tmpLay.visibleLayres(layer)"
-      >
-        {{ layer }}
-      </ButtonCustom>
-      <ButtonCustom
-        v-for="layer of dynamicLayres.getAllLayers()"
-        :key="layer"
-        :value="dynamicLayres.ifLayerIsActive(layer)"
-        @on-click="dynamicLayres.visibleLayres(layer)"
-      >
-        {{ layer }}
-      </ButtonCustom>
-      <ButtonCustom
-        v-for="source of sources.getSources()"
-        :key="source"
-        @on-click="sources.visibleSource(source)"
-      >
-        {{ source }}
-      </ButtonCustom>
+    <div v-for="category in dynamicLayres.getWMSGeonorge()" :key="category">
+      <ButtonList :text="category">
+        <WMSFromCategory :category="category" />
+      </ButtonList>
     </div>
     <ButtonCustom
       @on-click="openDialog(AddWMSDialog, 'Add WMS layer')"
