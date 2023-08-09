@@ -41,7 +41,7 @@ export const useWMSGeoNorgeStore = defineStore({
       } catch (err) {
         console.error(err)
       } finally {
-        this.loading = false
+        setTimeout(() => this.loading = false, 3000)
       }
     },
 

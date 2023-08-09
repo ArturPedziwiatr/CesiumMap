@@ -32,7 +32,7 @@ defineEmits(['close'])
     </div>
     <div v-for="category in dynamicLayres.getWMSGeonorge()" :key="category">
       <ButtonList :text="category" :key="category" v-slot="{ active }">
-        <WMSFromCategory :category="category" v-if="active" />
+        <WMSFromCategory :category="category" :key="category" v-if="active" />
       </ButtonList>
     </div>
     <ButtonCustom
