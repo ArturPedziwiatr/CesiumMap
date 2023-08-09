@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { createAuth0 } from '@auth0/auth0-vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import { createPinia } from 'pinia'
 
 createApp(App)
   .component('Icon', FontAwesomeIcon)
@@ -18,4 +19,5 @@ createApp(App)
     })
   )
   .use(ElementPlus)
+  .use(createPinia())
   .mount('#app')

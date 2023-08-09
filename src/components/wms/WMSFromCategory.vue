@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import LoadSection from '@/animation/LoadSection.vue'
 import ButtonCheckbox from '@/buttons/ButtonCheckbox.vue'
-import { computed, ref } from 'vue'
-import { NorwayWMS } from '../../data/WMSList'
-import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
+import { useWMSGeoNorgeStore } from '../../store/WMSGeoNorge.store'
 
 const props = defineProps({
   category: {
@@ -12,32 +10,40 @@ const props = defineProps({
   },
 })
 
-const active = ref(false)
-const layers = ref<string[]>([])
-
-computed(async () => {
-  console.log(NorwayWMS.servers[props.category])
-  if (NorwayWMS.servers[props.category]) {
-    try {
-      await Promise.all(
-        NorwayWMS.servers[props.category].map(async elem => {
-          console.log(elem)
-          const endpoint = await new WmsEndpoint(elem).isReady()
-          const getLayers = endpoint.getLayers()
-          layers.value.concat(getLayers.flatMap(x => (x.name ? [x.name] : [])))
-        })
-      )
-    } catch (er) {
-      console.log(er)
-    } finally {
-      active.value = true
-    }
-  }
-})
+const WMSGeoNorge = useWMSGeoNorgeStore()
+WMSGeoNorge.fetchWMSLayers(props.category)
 </script>
 
 <template>
-  <LoadSection :loading="!active" class="box">
-    asdfjaskjdfbhksdabfghjkavbsfhvbadhffkhkbvfdsajhblsdf
+  <LoadSection :loading="WMSGeoNorge.getLoading" class="wms--box">
+    <ButtonCheckbox
+      v-for="wms of WMSGeoNorge.getLayers(category)"
+      :key="wms.layer"
+      :text="wms.layer"
+      class="asd"
+      @update="WMSGeoNorge.addOrRemoveLayer(wms, category, $event)"
+    >
+      <p>{{ wms.layer }}</p>
+    </ButtonCheckbox>
   </LoadSection>
 </template>
+
+<style scoped lang="scss">
+.wms--box {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  p {
+    width: 83%;
+    margin-left: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .line {
+    width: 100%;
+  }
+}
+</style>

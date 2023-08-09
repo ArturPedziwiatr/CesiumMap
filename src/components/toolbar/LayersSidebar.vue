@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import AuthSection from '@/auth/AuthSection.vue'
-import useGeoJSONLoader from '@Func/geojson/GeoJSONLoader'
 import ButtonCustom from '@/buttons/ButtonCustom.vue'
 import useDynamicLayers from '@Func/layers/layers'
 import { ref } from 'vue'
 import AddWMSDialog from '@/dialog/AddWMSDialog.vue'
 import { ElDialog } from 'element-plus'
-import useLayers from '@Func/cesium/layers.ts'
 import ButtonList from '@/buttons/ButtonList.vue'
 import WMSFromCategory from '@/wms/WMSFromCategory.vue'
 
-const sources = useGeoJSONLoader(),
+const
   dynamicLayres = useDynamicLayers(),
   dialogVisible = ref(false),
   component = ref(),
-  title = ref(''),
-  tmpLay = useLayers()
+  title = ref('')
 
 const openDialog = (arg1: any, arg2: string) => {
   component.value = arg1
@@ -33,8 +30,8 @@ defineEmits(['close'])
       <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)" />
     </div>
     <div v-for="category in dynamicLayres.getWMSGeonorge()" :key="category">
-      <ButtonList :text="category">
-        <WMSFromCategory :category="category" />
+      <ButtonList :text="category" :key="category" v-slot="{ active }">
+        <WMSFromCategory :category="category" v-if="active" />
       </ButtonList>
     </div>
     <ButtonCustom
@@ -96,5 +93,11 @@ defineEmits(['close'])
     max-height: 70%;
     overflow-y: auto;
   }
+}
+
+:deep(.buttonlist--text) {
+  margin-left: 0 !important;
+  font-size: $layersbar-text-font;
+  font-weight: $weight-5;
 }
 </style>

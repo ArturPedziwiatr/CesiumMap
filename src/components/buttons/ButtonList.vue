@@ -40,7 +40,7 @@ const expanded = () => {
       <label :for="`collapsible-${id}`">
         <img v-if="src" :src="src" alt="logo" />
         <Icon v-else-if="icon" :icon="['fas', icon]" />
-        <p>{{ text }}</p>
+        <p class="buttonlist--text">{{ text }}</p>
         <Icon
           v-if="back"
           :icon="['fas', 'right-to-bracket']"
@@ -49,7 +49,7 @@ const expanded = () => {
         />
       </label>
       <div class="collapsible--text">
-        <slot />
+        <slot :active="active" />
       </div>
     </div>
   </div>

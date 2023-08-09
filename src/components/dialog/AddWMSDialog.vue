@@ -36,21 +36,23 @@ const emit = defineEmits(['close'])
     <div class="grid--box">
       <LoadSection :loading="dynamicLayres.loading.value" class="box">
         <ButtonCheckbox
-        v-for="layer of dynamicLayres.getWMSLayers()"
-        :key="layer.title"
-        :text="layer.title"
-        @update="addOrRemoveLayer(layer.name)"
-        />
+          v-for="layer of dynamicLayres.getWMSLayers()"
+          :key="layer.title"
+          @update="addOrRemoveLayer(layer.name)"
+        >
+          {{ layer.title }}
+        </ButtonCheckbox>
         <p v-if="dynamicLayres.error.value" class="error-msg" >{{ dynamicLayres.error.value }}</p>
       </LoadSection>
       <div class="setting--box">
         <div class="temp">
           <InputCustom @model-value="alias = $event" placeholder="Layre name..." />
           <ButtonCheckbox
-            text="Add to group"
             :value="group"
             @update="group = $event"
-          />
+          >
+          Add to group
+          </ButtonCheckbox>
         </div>
         <ButtonCustom
           type="off"

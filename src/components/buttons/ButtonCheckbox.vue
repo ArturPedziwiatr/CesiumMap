@@ -4,10 +4,6 @@ import { ref } from 'vue'
 
 const id = uniqueId()
 const props = defineProps({
-  text: {
-    type: String,
-    required: true,
-  },
   value: {
     type: Boolean,
     required: false,
@@ -28,7 +24,7 @@ defineEmits(['update'])
       v-on:change="$emit('update', checkbox)"
     />
     <label :for="`checkbox-${id}`">
-      <p>{{ text }}</p>
+      <slot />
     </label>
   </div>
 </template>

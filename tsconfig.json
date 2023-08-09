@@ -23,6 +23,7 @@
       "@Func/*": ["./src/composables/*"],
       "@Global/*": ["./src/global/*"],
       "@Interface/*": ["./src/interface/*"],
+      "@Store/*": ["./src/store/*"],
     },
     "types": ["cesium"],
   },

@@ -70,15 +70,6 @@ defineEmits(['close'])
 </template>
 
 <style scoped lang="scss">
-.box {
-  height: 200px;
-  width: auto;
-  border-top: 1px solid $primary-color;
-  border-bottom: 1px solid $primary-color;
-  padding: 0.4rem 0;
-  overflow-x: auto;
-  margin: 1rem 0;
-}
 
 :deep(.el-dialog__body) {
   padding-top: 0;
