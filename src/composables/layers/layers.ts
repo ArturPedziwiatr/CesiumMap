@@ -42,7 +42,7 @@ export default function useDynamicLayers() {
   const addLayer = async (input: string, aliasWMS: string) => {
     try {
       console.log(input);
-      
+
       if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
           new WebMapServiceImageryProvider({
