@@ -1,4 +1,4 @@
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@enum/MapType'
 import {
   Cartesian3,
   ImageryLayer,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import LoadSection from '@/animation/LoadSection.vue'
-import ButtonCheckbox from '@/buttons/ButtonCheckbox.vue'
+import LoadSection from '@component/animation/LoadSection.vue'
+import ButtonCheckbox from '@component/buttons/ButtonCheckbox.vue'
 import { useWMSGeoNorgeStore } from '../../store/WMSGeoNorge.store'
 
 const props = defineProps({

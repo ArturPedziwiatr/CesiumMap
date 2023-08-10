@@ -3,7 +3,7 @@ import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
 import { NorwayWMS } from '../data/WMSList'
 import { ImageryLayer, Viewer, WebMapServiceImageryProvider } from 'cesium'
 import { inject } from 'vue'
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@enum/MapType'
 
 interface IWMS {
   readonly url: string
@@ -13,7 +13,7 @@ interface IWMSGeoNorge {
   viewer: Viewer
   layers: Map<string, IWMS[]>
   imageryProviders: Map<string, ImageryLayer>
-  loading: string[],
+  loading: string[]
 }
 
 export const useWMSGeoNorgeStore = defineStore({
@@ -26,7 +26,7 @@ export const useWMSGeoNorgeStore = defineStore({
   }),
   getters: {
     getLayers: state => (category: string) => state.layers.get(category),
-    getLoading: state => (category: string) => (state.loading.includes(category)),
+    getLoading: state => (category: string) => state.loading.includes(category),
   },
   actions: {
     async fetchWMSLayers(category: string) {
@@ -37,10 +37,14 @@ export const useWMSGeoNorgeStore = defineStore({
         var categoryLayers: IWMS[] = []
         const geonorge = NorwayWMS.servers[category]
         if (!geonorge) throw new Error('Empty servers')
-        
+
         for await (const url of geonorge) {
           const endpoint = await new WmsEndpoint(url).isReady()
-          const result = this.getFromWmsLayersSummer(endpoint.getLayers(), url, [])
+          const result = this.getFromWmsLayersSummer(
+            endpoint.getLayers(),
+            url,
+            []
+          )
           categoryLayers = [...categoryLayers, ...result]
         }
         this.layers.set(category, categoryLayers)
@@ -74,12 +78,15 @@ export const useWMSGeoNorgeStore = defineStore({
       if (imagery) imagery.show = state
     },
 
-    getFromWmsLayersSummer(input: WmsLayerSummary[], url: string, result: IWMS[]): IWMS[] {
+    getFromWmsLayersSummer(
+      input: WmsLayerSummary[],
+      url: string,
+      result: IWMS[]
+    ): IWMS[] {
       input.forEach(elem => {
         if (elem.children)
-          this.getFromWmsLayersSummer(elem.children, url,result)
-        else if(elem.name)
-          result.push({ url, layer: elem.name})
+          this.getFromWmsLayersSummer(elem.children, url, result)
+        else if (elem.name) result.push({ url, layer: elem.name })
       })
 
       return result

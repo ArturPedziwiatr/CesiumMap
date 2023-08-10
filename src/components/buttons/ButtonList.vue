@@ -18,15 +18,10 @@ const props = defineProps({
 })
 const id = uniqueId()
 const active = ref(props.checked)
-
-const expanded = () => {
-  if ((document.getElementById(`collapsible-${id}`) as any).checked === false) 
-    document.querySelector('.sidebar')?.removeAttribute('collapsed')
-}
 </script>
 
 <template>
-  <div class="wrapper" @click="expanded">
+  <div class="wrapper">
     <div class="collapsible">
       <input type="checkbox" :id="`collapsible-${id}`" v-model="active" />
       <label :for="`collapsible-${id}`">

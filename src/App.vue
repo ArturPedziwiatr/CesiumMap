@@ -3,10 +3,10 @@ import { onMounted, provide, ref } from 'vue'
 import { Ion, Cartesian3, Viewer, Terrain } from 'cesium'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-import Sidebar from '@/toolbar/Sidebar.vue'
-import { MapsType } from '@Enum/MapType.ts'
-import global from '@Global/global'
-import LayersSidebar from '@/toolbar/LayersSidebar.vue'
+import Sidebar from '@component/toolbar/Sidebar.vue'
+import { MapsType } from '@enum/MapType.ts'
+import global from '@global/global'
+import LayersSidebar from '@component/toolbar/LayersSidebar.vue'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
@@ -55,6 +55,7 @@ onMounted(() => {
 })
 
 const close = () => (layersActive.value = false)
+const setActive = (value: boolean) => (layersActive.value = value)
 </script>
 
 <template>
@@ -68,7 +69,7 @@ const close = () => (layersActive.value = false)
     <Transition>
       <LayersSidebar
         v-if="layersActive"
-        @close="layersActive = $event"
+        @close="setActive"
         v-clickOutside="close"
       />
     </Transition>

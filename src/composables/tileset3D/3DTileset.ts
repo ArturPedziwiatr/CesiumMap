@@ -1,4 +1,4 @@
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@enum/MapType'
 import {
   Cesium3DTileStyle,
   GoogleMaps,
@@ -15,7 +15,7 @@ const loaded = ref(false)
 
 export default function use3DTileset() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
-  
+
   const googleInit = async (alias: string) => {
     try {
       if (!terrainBox.has(alias)) {
@@ -24,7 +24,7 @@ export default function use3DTileset() {
         viewer.scene.primitives.add(google3DTileset)
         terrainBox.set(alias, {
           terrain: google3DTileset,
-          glob: false
+          glob: false,
         })
       }
     } catch (err) {
@@ -46,7 +46,7 @@ export default function use3DTileset() {
         viewer.scene.primitives.add(osmBuildings)
         terrainBox.set(alias, {
           terrain: osmBuildings,
-          glob: true
+          glob: true,
         })
       }
     } catch (err) {

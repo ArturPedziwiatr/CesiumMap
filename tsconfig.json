@@ -17,15 +17,15 @@
     "noFallthroughCasesInSwitch": true,
     "allowJs": true,
     "paths": {
-      "@/*": ["./src/components/*"],
-      "@Script/*": ["./src/script/*"],
-      "@Enum/*": ["./src/enums/*"],
-      "@Func/*": ["./src/composables/*"],
-      "@Global/*": ["./src/global/*"],
-      "@Interface/*": ["./src/interface/*"],
-      "@Store/*": ["./src/store/*"],
+      "@/*": ["./src/*"],
+      "@component/*": ["./src/components/*"],
+      "@enum/*": ["./src/enums/*"],
+      "@function/*": ["./src/composables/*"],
+      "@global/*": ["./src/global/*"],
+      "@interface/*": ["./src/interface/*"],
+      "@store/*": ["./src/store/*"]
     },
-    "types": ["cesium"],
+    "types": ["cesium"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

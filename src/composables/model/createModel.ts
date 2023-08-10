@@ -1,4 +1,4 @@
-import { Model } from '@Enum/model.ts'
+import { Model } from '@enum/model.ts'
 import type { IAirplane } from './ICreateModel'
 import {
   TimeIntervalCollection,
@@ -12,7 +12,6 @@ import {
 } from 'cesium'
 
 export default function useCreateModel() {
-
   const airplane = async ({ start, stop, position }: IAirplane) => {
     const time = new TimeInterval({ start, stop })
     const availability = new TimeIntervalCollection([time])
@@ -49,7 +48,7 @@ export default function useCreateModel() {
           { clampToGround: true }
         ),
         build: await Cesium3DTileset.fromUrl(
-         await IonResource.fromAssetId(Model.BUILDING_BUILD),
+          await IonResource.fromAssetId(Model.BUILDING_BUILD)
         ),
       }
     } catch (er) {
@@ -63,6 +62,6 @@ export default function useCreateModel() {
 
   return {
     airplane,
-    building
+    building,
   }
 }

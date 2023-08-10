@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import ButtonGroup from '@/buttons/ButtonGroup.vue'
-import ButtonList from '@/buttons/ButtonList.vue'
-import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
-import use3DTileset from '@Func/tileset3D/3DTileset'
-import useTerrains from '@Func/terrain/terrain'
-import AuthSection from '@/auth/AuthSection.vue'
-import ButtonCustom from '@/buttons/ButtonCustom.vue'
-import useSidebar, { SidebarsType } from '@Func/sidebar/sidebar'
+import ButtonGroup from '@component/buttons/ButtonGroup.vue'
+import ButtonList from '@component/buttons/ButtonList.vue'
+import useCesiumPresentation from '@function/cesium/cesiumPresentation'
+import use3DTileset from '@function/tileset3D/3DTileset'
+import useTerrains from '@function/terrain/terrain'
+import AuthSection from '@component/auth/AuthSection.vue'
+import ButtonCustom from '@component/buttons/ButtonCustom.vue'
+import useSidebar, { SidebarsType } from '@function/sidebar/sidebar'
 
-const
-  actions = useCesiumPresentation(),
+const actions = useCesiumPresentation(),
   tileset = use3DTileset(),
   maps = useTerrains(),
   menu = useSidebar()

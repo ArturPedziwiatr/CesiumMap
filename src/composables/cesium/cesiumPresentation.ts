@@ -7,16 +7,18 @@ import {
   ClassificationType,
   Viewer,
 } from 'cesium'
-import useCreateModel from '@Func/model/createModel'
+import useCreateModel from '@function/model/createModel'
 import { ref, inject } from 'vue'
-import { MapsType } from '@Enum/MapType'
-import { IDataPoint } from '@Func/cesium/ICesiumPresentation'
-import global from '@Global/global'
+import { MapsType } from '@enum/MapType'
+import { IDataPoint } from '@function/cesium/ICesiumPresentation'
+import global from '@global/global'
 
 const createModel = useCreateModel()
 export default function useCesiumPresentation() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
-  const tracker =  ref<Cartesian3>(Cartesian3.fromDegrees(12.64044, 55.60784, 40.93))
+  const tracker = ref<Cartesian3>(
+    Cartesian3.fromDegrees(12.64044, 55.60784, 40.93)
+  )
 
   const importFlyingData = () => {
     clear()
@@ -108,7 +110,11 @@ export default function useCesiumPresentation() {
   const bumpToHome = () => {
     clear()
     viewer.camera.flyTo({
-      destination: Cartesian3.fromDegrees(global.value.coords.lon, global.value.coords.lat, 2000),
+      destination: Cartesian3.fromDegrees(
+        global.value.coords.lon,
+        global.value.coords.lat,
+        2000
+      ),
     })
   }
 

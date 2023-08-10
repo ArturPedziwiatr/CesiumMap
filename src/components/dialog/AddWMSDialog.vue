@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import AuthSection from '@/auth/AuthSection.vue'
-import ButtonCustom from '@/buttons/ButtonCustom.vue'
-import InputCustom from '@/buttons/InputCustom.vue'
-import useDynamicLayers from '@Func/layers/layers'
-import LoadSection from '@/animation/LoadSection.vue'
+import AuthSection from '@component/auth/AuthSection.vue'
+import ButtonCustom from '@component/buttons/ButtonCustom.vue'
+import InputCustom from '@component/buttons/InputCustom.vue'
+import useDynamicLayers from '@function/layers/layers'
+import LoadSection from '@component/animation/LoadSection.vue'
 import { ref } from 'vue'
-import ButtonCheckbox from '@/buttons/ButtonCheckbox.vue'
+import ButtonCheckbox from '@component/buttons/ButtonCheckbox.vue'
 
 const dynamicLayres = useDynamicLayers(),
   layers = ref<string[]>([]),
@@ -42,16 +42,18 @@ const emit = defineEmits(['close'])
         >
           {{ layer.title }}
         </ButtonCheckbox>
-        <p v-if="dynamicLayres.error.value" class="error-msg" >{{ dynamicLayres.error.value }}</p>
+        <p v-if="dynamicLayres.error.value" class="error-msg">
+          {{ dynamicLayres.error.value }}
+        </p>
       </LoadSection>
       <div class="setting--box">
         <div class="temp">
-          <InputCustom @model-value="alias = $event" placeholder="Layre name..." />
-          <ButtonCheckbox
-            :value="group"
-            @update="group = $event"
-          >
-          Add to group
+          <InputCustom
+            @model-value="alias = $event"
+            placeholder="Layre name..."
+          />
+          <ButtonCheckbox :value="group" @update="group = $event">
+            Add to group
           </ButtonCheckbox>
         </div>
         <ButtonCustom

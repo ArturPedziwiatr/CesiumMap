@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import AuthSection from '@/auth/AuthSection.vue'
-import useGeoJSONLoader from '@Func/geojson/GeoJSONLoader'
-import ButtonCustom from '@/buttons/ButtonCustom.vue'
-import useDynamicLayers from '@Func/layers/layers'
+import AuthSection from '@component/auth/AuthSection.vue'
+import useGeoJSONLoader from '@function/geojson/GeoJSONLoader'
+import ButtonCustom from '@component/buttons/ButtonCustom.vue'
+import useDynamicLayers from '@function/layers/layers'
 import { ref } from 'vue'
-import AddWMSDialog from '@/dialog/AddWMSDialog.vue'
+import AddWMSDialog from '@component/dialog/AddWMSDialog.vue'
 import { ElDialog } from 'element-plus'
-import useLayers from '@Func/cesium/layers.ts'
+import useLayers from '@function/cesium/layers.ts'
 
 const sources = useGeoJSONLoader(),
   dynamicLayres = useDynamicLayers(),
@@ -28,7 +28,7 @@ defineEmits(['close'])
   <AuthSection class="layers--sidebar">
     <div class="sidebar--title">
       <p>Layers</p>
-      <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)"/>
+      <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)" />
     </div>
     <div :key="dynamicLayres.refresToken.value" class="layers--checkbox">
       <ButtonCustom
@@ -70,7 +70,6 @@ defineEmits(['close'])
 </template>
 
 <style scoped lang="scss">
-
 :deep(.el-dialog__body) {
   padding-top: 0;
 }

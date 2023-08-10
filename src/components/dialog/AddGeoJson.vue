@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import FileInput from '@/input/FileInput.vue'
+import FileInput from '@component/input/FileInput.vue'
 import axios from 'axios'
 import { ref } from 'vue'
 
@@ -23,8 +23,11 @@ const uploadFile = (url: string, file: File) => {
 
 const submitForm = async () => {
   if (file.value) {
-    const { data } = await uploadFile('http://localhost:8080/v1/geojson/upload', file.value)
-    console.log({ data });
+    const { data } = await uploadFile(
+      'http://localhost:8080/v1/geojson/upload',
+      file.value
+    )
+    console.log({ data })
   }
 }
 </script>

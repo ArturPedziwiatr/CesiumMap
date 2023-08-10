@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import ButtonSearch from '@/buttons/ButtonSearch.vue'
+import ButtonSearch from '@component/buttons/ButtonSearch.vue'
 import { useAuth0 } from '@auth0/auth0-vue'
-import ButtonLogin from '@/buttons/ButtonLogin.vue'
+import ButtonLogin from '@component/buttons/ButtonLogin.vue'
 import { ref } from 'vue'
-import ButtonGroup from '@/buttons/ButtonGroup.vue'
-import ButtonList from '@/buttons/ButtonList.vue'
-import useCesiumPresentation from '@Func/cesium/cesiumPresentation'
-import use3DTileset from '@Func/tileset3D/3DTileset'
-import useTerrains from '@Func/terrain/terrain'
-import AuthSection from '@/auth/AuthSection.vue'
-import ButtonCustom from '@/buttons/ButtonCustom.vue'
-import InstructionsComponent from '@/toolbar/additional/InstructionsComponent.vue'
+import ButtonGroup from '@component/buttons/ButtonGroup.vue'
+import ButtonList from '@component/buttons/ButtonList.vue'
+import useCesiumPresentation from '@function/cesium/cesiumPresentation'
+import use3DTileset from '@function/tileset3D/3DTileset'
+import useTerrains from '@function/terrain/terrain'
+import AuthSection from '@component/auth/AuthSection.vue'
+import ButtonCustom from '@component/buttons/ButtonCustom.vue'
+import InstructionsComponent from '@component/toolbar/additional/InstructionsComponent.vue'
 
 const { isAuthenticated, user } = useAuth0(),
   sidebar = ref<HTMLElement>(),
@@ -32,6 +32,10 @@ const sidebarAction = () => {
     )
     Array.from(input).forEach((elem: any) => (elem.checked = false))
   }
+}
+
+const expanded = () => {
+  document.querySelector('.sidebar')?.removeAttribute('collapsed')
 }
 </script>
 
@@ -60,7 +64,7 @@ const sidebarAction = () => {
         <Icon :icon="['fas', 'house']" />
         <p>View Home</p>
       </ButtonCustom>
-      <ButtonList icon="scroll" text="Presentation">
+      <ButtonList icon="scroll" text="Presentation" @click="expanded">
         <ButtonCustom @on-click="actions.importFlyingData()"
           >Points generate</ButtonCustom
         >
@@ -75,7 +79,7 @@ const sidebarAction = () => {
         >
       </ButtonList>
       <AuthSection>
-        <ButtonList icon="mosque" text="3D Buildings">
+        <ButtonList icon="mosque" text="3D Buildings" @click="expanded">
           <div v-if="tileset.getLoaded()">
             <ButtonCustom
               v-for="tile of tileset.getTileset()"
@@ -86,7 +90,7 @@ const sidebarAction = () => {
             </ButtonCustom>
           </div>
         </ButtonList>
-        <ButtonList icon="earth-americas" text="Terrain">
+        <ButtonList icon="earth-americas" text="Terrain" @click="expanded">
           <ButtonGroup
             type="terrain"
             @on-change="(e: string) => maps.visibleTerrain(e)"
@@ -101,7 +105,7 @@ const sidebarAction = () => {
             </ButtonCustom>
           </ButtonGroup>
         </ButtonList>
-        <ButtonList icon="circle-info" text="Instructions">
+        <ButtonList icon="circle-info" text="Instructions" @click="expanded">
           <InstructionsComponent />
         </ButtonList>
       </AuthSection>

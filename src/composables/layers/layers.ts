@@ -1,13 +1,9 @@
-import { MapsType } from '@Enum/MapType'
-import {
-  ImageryLayer,
-  Viewer,
-  WebMapServiceImageryProvider,
-} from 'cesium'
+import { MapsType } from '@enum/MapType'
+import { ImageryLayer, Viewer, WebMapServiceImageryProvider } from 'cesium'
 import { inject, ref } from 'vue'
 import { ElNotification } from 'element-plus'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
-import { ILayerSet } from '@Interface/layers/ILayerSet'
+import { ILayerSet } from '@interface/layers/ILayerSet'
 import { uniqueId } from 'lodash'
 import { NorwayWMS } from '../../data/WMSList'
 
@@ -30,8 +26,8 @@ export default function useDynamicLayers() {
       loading.value = true
       const endpoint = await new WmsEndpoint(input).isReady()
       reduceLayers(endpoint.getLayers())
-      console.log(endpoint.getServiceInfo());
-      
+      console.log(endpoint.getServiceInfo())
+
       loading.value = false
       refresToken.value = uniqueId()
     } catch {
@@ -42,7 +38,7 @@ export default function useDynamicLayers() {
 
   const addLayer = async (input: string, aliasWMS: string) => {
     try {
-      console.log(input);
+      console.log(input)
 
       if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
@@ -69,7 +65,7 @@ export default function useDynamicLayers() {
     }
   }
 
-  const getWMSGeonorge = () =>  (NorwayWMS.categories)
+  const getWMSGeonorge = () => NorwayWMS.categories
 
   const getAllLayers = () => Array.from(layersBox.value.keys())
   const getWMSLayers = () => layers.value

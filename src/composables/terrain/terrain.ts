@@ -1,7 +1,7 @@
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@enum/MapType'
 import { ImageryLayer, MapboxStyleImageryProvider, Viewer } from 'cesium'
 import { inject } from 'vue'
-import { ITerrain } from '@Func/terrain/ITerrain'
+import { ITerrain } from '@function/terrain/ITerrain'
 
 const mapBox = new Map<string, ImageryLayer>()
 
@@ -14,7 +14,7 @@ export default function useTerrains() {
           new MapboxStyleImageryProvider({
             styleId,
             url,
-            accessToken: __MAPBOX_TOKEN__
+            accessToken: __MAPBOX_TOKEN__,
           }),
           {}
         )
@@ -32,12 +32,9 @@ export default function useTerrains() {
 
   const visibleTerrain = (alias: string) =>
     mapBox.forEach((val, key) => {
-      
       if (key === alias) val.show = !val.show
       else val.show = false
     })
-  
-
 
   const init = async () => {
     addMapBox({ alias: 'MapBox Dark', styleId: 'dark-v11' })

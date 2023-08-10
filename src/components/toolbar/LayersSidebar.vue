@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import AuthSection from '@/auth/AuthSection.vue'
-import ButtonCustom from '@/buttons/ButtonCustom.vue'
-import useDynamicLayers from '@Func/layers/layers'
+import AuthSection from '@component/auth/AuthSection.vue'
+import ButtonCustom from '@component/buttons/ButtonCustom.vue'
+import useDynamicLayers from '@function/layers/layers'
 import { ref } from 'vue'
-import AddWMSDialog from '@/dialog/AddWMSDialog.vue'
-import AddGeoJsonDialog from '@/dialog/AddGeoJson.vue'
+import AddWMSDialog from '@component/dialog/AddWMSDialog.vue'
+import AddGeoJsonDialog from '@component/dialog/AddGeoJson.vue'
 import { ElDialog } from 'element-plus'
-import ButtonList from '@/buttons/ButtonList.vue'
-import WMSFromCategory from '@/wms/WMSFromCategory.vue'
+import ButtonList from '@component/buttons/ButtonList.vue'
+import WMSFromCategory from '@component/wms/WMSFromCategory.vue'
 
-const
-  dynamicLayres = useDynamicLayers(),
+const dynamicLayres = useDynamicLayers(),
   dialogVisible = ref(false),
   component = ref(),
   title = ref('')
@@ -43,7 +42,10 @@ defineEmits(['close'])
       <p>Add WMS layer</p>
     </ButtonCustom>
 
-    <ButtonCustom @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')" :check="false">
+    <ButtonCustom
+      @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')"
+      :check="false"
+    >
       add geojson
     </ButtonCustom>
 

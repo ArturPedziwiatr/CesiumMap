@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { PropType, ref } from 'vue'
-import { InputType, InputMatcher } from '@Enum/InputType'
-import { IErrorInput } from '@Interface/IError'
+import { InputType, InputMatcher } from '@enum/InputType'
+import { IErrorInput } from '@interface/IError'
 
 const props = defineProps({
   type: {
@@ -15,7 +15,7 @@ const props = defineProps({
   icon: {
     type: String,
     required: false,
-  }
+  },
 })
 const emit = defineEmits(['model-value', 'onClick'])
 const error = ref<IErrorInput>({ status: true, msg: '' })
@@ -65,7 +65,7 @@ const input = ref('')
     margin-left: 8px;
     background: $primary-light-color;
 
-    &[type="search"]::-webkit-search-cancel-button {
+    &[type='search']::-webkit-search-cancel-button {
       -webkit-appearance: none;
       appearance: none;
       height: 10px;

@@ -28,14 +28,14 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./src/components', import.meta.url)),
-        '@Script': fileURLToPath(new URL('./src/script', import.meta.url)),
-        '@Enum': fileURLToPath(new URL('./src/enums', import.meta.url)),
-        '@Icon': fileURLToPath(new URL('./src/assets/icon', import.meta.url)),
-        '@Func': fileURLToPath(new URL('./src/composables', import.meta.url)),
-        '@Global': fileURLToPath(new URL('./src/global', import.meta.url)),
-        '@Interface': fileURLToPath(new URL('./src/interface', import.meta.url)),
-        '@Store': fileURLToPath(new URL('./src/interface', import.meta.url)),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '@component': fileURLToPath(new URL('./src/components', import.meta.url)),
+        '@enum': fileURLToPath(new URL('./src/enums', import.meta.url)),
+        '@icon': fileURLToPath(new URL('./src/assets/icon', import.meta.url)),
+        '@function': fileURLToPath(new URL('./src/composables', import.meta.url)),
+        '@global': fileURLToPath(new URL('./src/global', import.meta.url)),
+        '@interface': fileURLToPath(new URL('./src/interface', import.meta.url)),
+        '@store': fileURLToPath(new URL('./src/interface', import.meta.url)),
       },
     },
     server: {

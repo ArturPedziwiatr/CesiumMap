@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { Viewer } from '@Func/three/viewer'
+import { Viewer } from '@function/three/viewer'
 
 const threeCanva = ref<HTMLElement>()
 const canvaWrapper = ref<HTMLElement>()
@@ -12,7 +12,8 @@ const point = ref({ x: 0, y: 0 })
 
 const replaceMove = (event: MouseEvent) => {
   if (ifCanMove.value && canvaWrapper.value) {
-    const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = canvaWrapper.value
+    const { offsetLeft, offsetTop, offsetWidth, offsetHeight } =
+      canvaWrapper.value
     const vectorX = point.value.x - event.clientX
     const vectorY = point.value.y - event.clientY
     if (
