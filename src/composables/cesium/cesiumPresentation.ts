@@ -1,4 +1,4 @@
-import flightData from '../../data/flying-data.json'
+import flightData from '@/data/flying-data.json'
 import {
   Color,
   Cartesian3,

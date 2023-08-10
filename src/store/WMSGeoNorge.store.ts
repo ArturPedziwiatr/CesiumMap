@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
-import { NorwayWMS } from '../data/WMSList'
+import { NorwayWMS } from '@/data/WMSList'
 import { ImageryLayer, Viewer, WebMapServiceImageryProvider } from 'cesium'
 import { inject } from 'vue'
 import { MapsType } from '@enum/MapType'

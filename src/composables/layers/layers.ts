@@ -5,7 +5,7 @@ import { ElNotification } from 'element-plus'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
 import { ILayerSet } from '@interface/layers/ILayerSet'
 import { uniqueId } from 'lodash'
-import { NorwayWMS } from '../../data/WMSList'
+import { NorwayWMS } from '@/data/WMSList'
 
 const layersBox = ref(new Map<string, ImageryLayer>())
 

@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
         '@function': fileURLToPath(new URL('./src/composables', import.meta.url)),
         '@global': fileURLToPath(new URL('./src/global', import.meta.url)),
         '@interface': fileURLToPath(new URL('./src/interface', import.meta.url)),
-        '@store': fileURLToPath(new URL('./src/interface', import.meta.url)),
+        '@store': fileURLToPath(new URL('./src/store', import.meta.url)),
       },
     },
     server: {
