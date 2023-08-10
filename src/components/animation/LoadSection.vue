@@ -2,8 +2,8 @@
 defineProps({
   loading: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 
@@ -18,7 +18,6 @@ defineProps({
 
 <style scoped lang="scss">
 .box {
-  height: 50px;
+  height: 80px;
 }
-
 </style>

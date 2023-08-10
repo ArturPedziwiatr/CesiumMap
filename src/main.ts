@@ -6,6 +6,7 @@ import { createAuth0 } from '@auth0/auth0-vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import { createPinia } from 'pinia'
+import clickOutside from './directives/clickOutside'
 
 createApp(App)
   .component('Icon', FontAwesomeIcon)
@@ -20,4 +21,5 @@ createApp(App)
   )
   .use(ElementPlus)
   .use(createPinia())
+  .directive('clickOutside', clickOutside)
   .mount('#app')

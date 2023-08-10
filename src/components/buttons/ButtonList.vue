@@ -14,19 +14,11 @@ const props = defineProps({
   checked: {
     type: Boolean,
     default: false
-  },
-  src: {
-    type: String,
-    reguired: false
-  },
-  back: {
-    type: Boolean,
-    default: false
   }
 })
 const id = uniqueId()
 const active = ref(props.checked)
-defineEmits(['backTo'])
+
 const expanded = () => {
   if ((document.getElementById(`collapsible-${id}`) as any).checked === false) 
     document.querySelector('.sidebar')?.removeAttribute('collapsed')
@@ -38,15 +30,8 @@ const expanded = () => {
     <div class="collapsible">
       <input type="checkbox" :id="`collapsible-${id}`" v-model="active" />
       <label :for="`collapsible-${id}`">
-        <img v-if="src" :src="src" alt="logo" />
-        <Icon v-else-if="icon" :icon="['fas', icon]" />
+        <Icon v-if="icon" :icon="['fas', icon]" />
         <p class="buttonlist--text">{{ text }}</p>
-        <Icon
-          v-if="back"
-          :icon="['fas', 'right-to-bracket']"
-          class="icon-back"
-          @click="$emit('backTo')"
-        />
       </label>
       <div class="collapsible--text">
         <slot :active="active" />

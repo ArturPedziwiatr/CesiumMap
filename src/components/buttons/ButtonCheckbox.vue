@@ -33,13 +33,13 @@ defineEmits(['update'])
 .wrapper {
   display: flex;
   
-  & input {
+  input {
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
+    
     &:hover {
 
       & + label {
@@ -56,7 +56,7 @@ defineEmits(['update'])
     }
   }
   
-  & label {
+  label {
     cursor: pointer;
     color: $text-color;
     z-index: 1;
@@ -67,11 +67,6 @@ defineEmits(['update'])
     &:hover {
       color: $btn-hover-color;
     }
-
-    & p {
-      margin-left: 0.6rem;
-    }
-
   }
 }
 </style>

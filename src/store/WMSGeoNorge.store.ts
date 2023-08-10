@@ -9,24 +9,30 @@ interface IWMS {
   readonly url: string
   readonly layer: string
 }
+interface IWMSGeoNorge {
+  viewer: Viewer
+  layers: Map<string, IWMS[]>
+  imageryProviders: Map<string, ImageryLayer>
+  loading: string[],
+}
 
 export const useWMSGeoNorgeStore = defineStore({
   id: 'WMSGeoNorge',
-  state: () => ({
+  state: (): IWMSGeoNorge => ({
     viewer: inject<Viewer>(MapsType.Viewer)!,
     layers: new Map<string, IWMS[]>(),
     imageryProviders: new Map<string, ImageryLayer>(),
-    loading: false,
+    loading: [],
   }),
   getters: {
     getLayers: state => (category: string) => state.layers.get(category),
-    getLoading: state => state.loading,
+    getLoading: state => (category: string) => (state.loading.includes(category)),
   },
   actions: {
     async fetchWMSLayers(category: string) {
       if (this.layers.has(category)) return
 
-      this.loading = true
+      this.loading.push(category)
       try {
         var categoryLayers: IWMS[] = []
         const geonorge = NorwayWMS.servers[category]
@@ -41,7 +47,7 @@ export const useWMSGeoNorgeStore = defineStore({
       } catch (err) {
         console.error(err)
       } finally {
-        setTimeout(() => this.loading = false, 3000)
+        this.loading.splice(this.loading.indexOf(category), 1)
       }
     },
 

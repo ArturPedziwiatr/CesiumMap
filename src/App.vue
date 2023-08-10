@@ -53,6 +53,8 @@ onMounted(() => {
   }
   provide<Viewer>(MapsType.Viewer, viewer.value)
 })
+
+const close = () => (layersActive.value = false)
 </script>
 
 <template>
@@ -63,7 +65,13 @@ onMounted(() => {
       <p>Display</p>
       <Icon :icon="['fas', 'layer-group']" />
     </button>
-    <LayersSidebar v-if="layersActive" @close="layersActive = $event"/>
+    <Transition>
+      <LayersSidebar
+        v-if="layersActive"
+        @close="layersActive = $event"
+        v-clickOutside="close"
+      />
+    </Transition>
   </div>
 </template>
 
@@ -106,5 +114,12 @@ onMounted(() => {
       font-weight: 550;
     }
   }
+}
+
+.v-enter-active {
+  animation: enter 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.v-leave-active {
+  animation: leave 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 </style>
