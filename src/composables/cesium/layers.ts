@@ -30,9 +30,12 @@ export default function useLayers() {
               format: 'image/png',
             },
           }),
-          {}
+          {
+            clampToGround: true
+          }
         )
         layer.show = false
+        layer.clampToGround = true
         viewer.imageryLayers.add(layer)
         layersBox.set(alias, { layer, flyTo })
       }

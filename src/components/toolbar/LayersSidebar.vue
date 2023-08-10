@@ -42,11 +42,9 @@ defineEmits(['close'])
       <p>Add WMS layer</p>
     </ButtonCustom>
 
-    <ButtonCustom
-      @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')"
-      :check="false"
-    >
-      add geojson
+    <ButtonCustom @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')" :check="false">
+      <Icon :icon="['fas', 'plus']" />
+      <p>add geojson</p>
     </ButtonCustom>
 
     <ElDialog v-model="dialogVisible" :title="title">

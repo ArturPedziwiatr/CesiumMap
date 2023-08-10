@@ -1,3 +1,40 @@
-.mt-4 {
-  margin-top: 1rem;
+@mixin createClassWithUnits($classPrefix, $property) {
+  @for $unit from 1 through 12 {
+    .#{$classPrefix}t-#{$unit} {
+      #{$property}-top: $unit * 0.25rem;
+    }
+    .#{$classPrefix}b-#{$unit} {
+      #{$property}-bottom: $unit * 0.25rem;
+    }
+    .#{$classPrefix}l-#{$unit} {
+      #{$property}-left: $unit * 0.25rem;
+    }
+    .#{$classPrefix}r-#{$unit} {
+      #{$property}-right: $unit * 0.25rem;
+    }
+    .#{$classPrefix}x-#{unit} {
+      #{$property}-right: $unit * 0.25rem;
+      #{$property}-left: $unit * 0.25rem;
+    }
+    .#{$classPrefix}y-#{unit} {
+      #{$property}-top: $unit * 0.25rem;
+      #{$property}-bottom: $unit * 0.25rem;
+    }
+    .#{$classPrefix}-#{unit} {
+      #{$property}: $unit * 0.25rem;
+    }
+  }
+}
+
+@include createClassWithUnits(m, 'margin');
+@include createClassWithUnits(p, 'padding');
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
 }

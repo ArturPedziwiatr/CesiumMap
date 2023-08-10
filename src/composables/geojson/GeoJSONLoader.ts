@@ -12,10 +12,16 @@ export interface ISource {
 
 const sources = new Map<string, GeoJsonDataSource>()
 
+GeoJsonDataSource.clampToGround = true
 export default function useGeoJSONLoader() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
 
-  const load = async ({ alias, url, options, dynamic = () => {} }: ISource) => {
+  const load = async ({
+    alias,
+    url,
+    options,
+    dynamic = () => { }
+  }: ISource) => {
     try {
       const dataSource = await GeoJsonDataSource.load(url, options)
       dataSource.show = false
@@ -53,7 +59,7 @@ export default function useGeoJSONLoader() {
         dataSource.entities.values.map(entity => {
           if (!entity.polygon) return
           //@ts-ignore
-          entity.polygon.height! = 2200
+          // entity.polygon.height! = 2200
           const code = parseInt(entity?.properties?.code._value)
           if (code < 5) {
             //@ts-ignore
