@@ -2,7 +2,7 @@
   <form @submit.prevent>
     <el-label>
       Name of your layer:
-      <el-input type="text" v-model="name" class="mt-2"></el-input>
+      <el-input type="text" v-model="name" class="mt-2" required></el-input>
     </el-label>
     <el-tabs v-model="currentUploadOption" type="card" class="mt-4">
       <el-tab-pane label="FILE" name="file">
@@ -24,20 +24,23 @@
 </template>
 
 <script setup lang="ts">
+import useGeoJSONLoader from '@/composables/geojson/GeoJSONLoader'
 import axios from 'axios'
 import { computed, inject, ref } from 'vue'
 import UploadFile from './UploadFile.vue'
 import UploadText from './UploadText.vue'
-import { Viewer } from 'cesium'
-import { GeoJsonDataSource } from 'cesium'
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@/enums/MapType'
+import { GeoJsonDataSource, Viewer } from 'cesium'
 
 const name = ref()
 const file = ref()
 const text = ref('')
 const error = ref()
-const currentUploadOption = ref('text')
-const viewer = inject<Viewer>(MapsType.Viewer)!
+const currentUploadOption = ref<'file' | 'text'>('file')
+
+const { load, toggleSourceVisibility } = useGeoJSONLoader()
+
+const emits = defineEmits(['close'])
 
 const uploadFile = (url: string, file: File) => {
   const formData = new FormData()
@@ -70,8 +73,28 @@ const json = computed(async () => {
   return JSON.parse(await readFileContentAsync(file.value))
 })
 
-const submitForm = () => {
-  viewer.dataSources.add(GeoJsonDataSource.load(json.value, {}))
+const showError = (e: Error) => {
+  error.value = e.message
+}
+
+const submitForm = async () => {
+  // load(json.value, { clampToGround: true })
+  // await viewer.dataSources.add(
+  //   GeoJsonDataSource.load(json.value, { clampToGround: true })
+  // )
+
+  try {
+    await load({
+      alias: name.value,
+      url: await json.value,
+      options: { clampToGround: true },
+    })
+    toggleSourceVisibility(name.value)
+    emits('close')
+  } catch (e) {
+    if (e instanceof Error)
+      showError(e)
+  }
 
   // if (currentUploadOption.value === 'file')
   //   return () => uploadFile('http://localhost:8080/v1/geojson/file', file.value)

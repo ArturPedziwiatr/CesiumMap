@@ -4,10 +4,11 @@ import ButtonCustom from '@component/buttons/ButtonCustom.vue'
 import useDynamicLayers from '@function/layers/layers'
 import { ref } from 'vue'
 import AddWMSDialog from '@component/dialog/AddWMSDialog.vue'
-import AddGeoJsonDialog from '@component/dialog/AddGeoJson.vue'
+import AddGeoJsonDialog from '@component/dialog/AddGeoJson/AddGeoJson.vue'
 import { ElDialog } from 'element-plus'
 import ButtonList from '@component/buttons/ButtonList.vue'
 import WMSFromCategory from '@component/wms/WMSFromCategory.vue'
+import LoadedGeoJson from '@component/toolbar/LoadedGeoJson.vue'
 
 const dynamicLayres = useDynamicLayers(),
   dialogVisible = ref(false),
@@ -46,6 +47,8 @@ defineEmits(['close'])
       <Icon :icon="['fas', 'plus']" />
       <p>add geojson</p>
     </ButtonCustom>
+
+    <LoadedGeoJson></LoadedGeoJson>
 
     <ElDialog v-model="dialogVisible" :title="title">
       <component :is="component" @close="dialogVisible = false" />
