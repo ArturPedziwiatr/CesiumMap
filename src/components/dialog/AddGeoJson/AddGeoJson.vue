@@ -24,13 +24,13 @@
 </template>
 
 <script setup lang="ts">
+import useGeoJSONLoader from '@/composables/geojson/GeoJSONLoader'
 import axios from 'axios'
 import { computed, inject, ref } from 'vue'
 import UploadFile from './UploadFile.vue'
 import UploadText from './UploadText.vue'
-import { Viewer } from 'cesium'
-import { GeoJsonDataSource } from 'cesium'
-import { MapsType } from '@Enum/MapType'
+import { MapsType } from '@/enums/MapType'
+import { GeoJsonDataSource, Viewer } from 'cesium'
 
 const name = ref()
 const file = ref()
@@ -71,7 +71,10 @@ const json = computed(async () => {
 })
 
 const submitForm = () => {
-  viewer.dataSources.add(GeoJsonDataSource.load(json.value, {}))
+  // load(json.value, { clampToGround: true })
+  viewer.dataSources.add(
+    GeoJsonDataSource.load(json.value, { clampToGround: true })
+  )
 
   // if (currentUploadOption.value === 'file')
   //   return () => uploadFile('http://localhost:8080/v1/geojson/file', file.value)

@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import FileInput from '@/input/FileInput.vue'
+import FileInput from '@component/input/FileInput.vue'
 import { ref } from 'vue'
 
 defineProps(['modelValue'])

@@ -32,7 +32,7 @@ export default function useDynamicLayers() {
       refresToken.value = uniqueId()
     } catch {
       loading.value = false
-      error.value = 'Cannot conected with the WMS Server'
+      error.value = 'Cannot connect to the WMS Server'
     }
   }
 

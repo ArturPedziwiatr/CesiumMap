@@ -12,7 +12,6 @@ export interface ISource {
 
 const sources = new Map<string, GeoJsonDataSource>()
 
-GeoJsonDataSource.clampToGround = true
 export default function useGeoJSONLoader() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
 
@@ -85,5 +84,6 @@ export default function useGeoJSONLoader() {
     getSources,
     visibleSource,
     size,
+    load,
   }
 }
