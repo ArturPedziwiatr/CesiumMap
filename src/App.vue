@@ -1,33 +1,36 @@
 <script setup lang="ts">
 import { onMounted, provide, ref } from 'vue'
-import { Ion, Cartesian3, Viewer, Terrain } from 'cesium'
+import { Ion, Cartesian3, Viewer } from 'cesium'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import Sidebar from '@component/toolbar/Sidebar.vue'
 import { MapsType } from '@enum/MapType.ts'
 import global from '@global/global'
 import LayersSidebar from '@component/toolbar/LayersSidebar.vue'
+import SplitScreen from '@/components/animation/SplitScreen.vue'
+import PotreeGenerator from '@/components/potree/PotreeGenerator.vue'
+import useViewer from './composables/viewer/viewer'
 
 library.add(fas)
 Ion.defaultAccessToken = __CESIUM_TOKEN__
 const viewerConstruct = ref(false)
-const viewer = ref()
 const layersActive = ref(false)
+const viewer = useViewer().getCesium()
 
 onMounted(() => {
-  viewer.value = new Viewer('cesiumMap', {
-    homeButton: false,
-    baseLayerPicker: false,
-    infoBox: true,
-    fullscreenButton: false,
-    geocoder: false,
-    useBrowserRecommendedResolution: false,
-    skyAtmosphere: false,
-    terrain: Terrain.fromWorldTerrain({
-      requestWaterMask: true,
-      requestVertexNormals: true,
-    }),
-  })
+  // viewer.value = new Viewer('cesiumMap', {
+  //   homeButton: false,
+  //   baseLayerPicker: false,
+  //   infoBox: true,
+  //   fullscreenButton: false,
+  //   geocoder: false,
+  //   useBrowserRecommendedResolution: false,
+  //   skyAtmosphere: false,
+  //   terrain: Terrain.fromWorldTerrain({
+  //     requestWaterMask: true,
+  //     requestVertexNormals: true,
+  //   }),
+  // })
 
   viewerConstruct.value = !viewerConstruct.value
   navigator.geolocation.getCurrentPosition(
@@ -43,7 +46,7 @@ onMounted(() => {
   )
 
   function cesium() {
-    viewer.value.scene.camera.setView({
+    viewer?.scene.camera.setView({
       destination: Cartesian3.fromDegrees(
         global.value.coords.lon,
         global.value.coords.lat,
@@ -51,7 +54,7 @@ onMounted(() => {
       ),
     })
   }
-  provide<Viewer>(MapsType.Viewer, viewer.value)
+  provide<Viewer|undefined>(MapsType.Viewer, viewer)
 })
 
 const close = () => (layersActive.value = false)
@@ -60,7 +63,14 @@ const setActive = (value: boolean) => (layersActive.value = value)
 
 <template>
   <div class="container">
-    <div id="cesiumMap" class="container--map"></div>
+    <SplitScreen :split="true">
+      <template #front>
+        <div id="cesiumMap" class="container--map"></div>
+      </template>
+      <template #back>
+        <PotreeGenerator />
+      </template>
+    </SplitScreen>
     <Sidebar v-if="viewerConstruct" />
     <button class="layers--button" @click="layersActive = !layersActive">
       <p>Display</p>
@@ -79,10 +89,8 @@ const setActive = (value: boolean) => (layersActive.value = value)
 <style scoped lang="scss">
 .container {
   &--map {
-    position: fixed;
-    right: 0;
-    width: calc(100% - $sidebar-width-collapsed);
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: $body-color;
   }
 
