@@ -1,5 +1,16 @@
 @mixin createClassWithUnits($classPrefix, $property) {
   @for $unit from 1 through 12 {
+    .#{$classPrefix}x-#{unit} {
+      #{$property}-right: $unit * 0.25rem;
+      #{$property}-left: $unit * 0.25rem;
+    }
+    .#{$classPrefix}y-#{unit} {
+      #{$property}-top: $unit * 0.25rem;
+      #{$property}-bottom: $unit * 0.25rem;
+    }
+    .#{$classPrefix}-#{unit} {
+      #{$property}: $unit * 0.25rem;
+    }
     .#{$classPrefix}t-#{$unit} {
       #{$property}-top: $unit * 0.25rem;
     }
@@ -11,17 +22,6 @@
     }
     .#{$classPrefix}r-#{$unit} {
       #{$property}-right: $unit * 0.25rem;
-    }
-    .#{$classPrefix}x-#{unit} {
-      #{$property}-right: $unit * 0.25rem;
-      #{$property}-left: $unit * 0.25rem;
-    }
-    .#{$classPrefix}y-#{unit} {
-      #{$property}-top: $unit * 0.25rem;
-      #{$property}-bottom: $unit * 0.25rem;
-    }
-    .#{$classPrefix}-#{unit} {
-      #{$property}: $unit * 0.25rem;
     }
   }
 }
@@ -37,4 +37,12 @@
 .col {
   display: flex;
   flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
+.text--red {
+  color: red;
 }

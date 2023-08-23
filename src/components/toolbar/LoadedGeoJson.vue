@@ -8,8 +8,8 @@ const sources = computed(() => getSources());
 </script>
 <template>
   <div v-for="[alias] in sources" :key="alias">
-    <button @click="toggleSourceVisibility(alias)">
+    <el-button @click="toggleSourceVisibility(alias)" class="mt-2">
       {{ alias }}
-    </button>
+    </el-button>
   </div>
 </template>

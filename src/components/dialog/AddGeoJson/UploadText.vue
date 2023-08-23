@@ -2,6 +2,8 @@
   <el-input
     type="textarea"
     v-model="val"
+    maxHeight="500"
+    :rows="6"
   />
 </template>
 

@@ -58,8 +58,8 @@ export default function useGeoJSONLoader() {
     if (dynamic) {
       dynamic(dataSource)
     }
-    await viewer.dataSources.add(dataSource)
     addSource(alias, dataSource)
+    await viewer.dataSources.add(dataSource)
   }
 
   return {

@@ -16,12 +16,35 @@ if (fileInput.value) emit('upload', fileInput.value)
 </script>
 
 <template>
-  <div>
-    <label>Choose a file to upload:</label>
+  <div class="col">
+    <label class="mt-2">Choose a file to upload:</label>
     <input
       type="file"
       ref="fileInput"
+      class="custom-file-input mt-2 mb-2 flex"
       @input="updateFile"
     />
   </div>
 </template>
+
+<style lang="scss" scoped>
+.custom-file-input::-webkit-file-upload-button {
+  visibility: visible;
+  background-color: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  color: var(--el-button-text-color);
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  font-family: Poppins, sans-serif;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #7ad5ff;
+    color: #7ad5ff;
+    background-color: #7ad5ff22;
+    transition: border-color 0.15s ease-in, color 0.15s ease-in;
+  }
+}
+</style>
