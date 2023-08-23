@@ -1,7 +1,7 @@
 //######## Badeplasser - WMS	Oslo kommune ########
 export interface IWMSList {
   name: string
-  range: number[]
+  range?: number[]
   categories: string[]
   servers: Record<string, string[]>
   

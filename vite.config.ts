@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
       __MAPBOX_TOKEN__: JSON.stringify(env.VITE_MAPBOX_TOKEN),
       __CLIENT_ID__: JSON.stringify(env.VITE_AUTH_CLIENT_ID),
       __DOMAIN__: JSON.stringify(env.VITE_AUTH_DOMEN),
+      __API_URL__: JSON.stringify(env.VITE_API_URL),
     },
     css: {
       preprocessorOptions: {

@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
-import { NorwayWMS } from '@/data/WMSList'
+import { IWMSList, NorwayWMS } from '@/data/WMSList'
 import { ImageryLayer, Viewer, WebMapServiceImageryProvider } from 'cesium'
 import { inject } from 'vue'
 import { MapsType } from '@enum/MapType'
+import axios from 'axios'
 
 interface IWMS {
   readonly url: string
@@ -14,6 +15,7 @@ interface IWMSGeoNorge {
   layers: Map<string, IWMS[]>
   imageryProviders: Map<string, ImageryLayer>
   loading: string[]
+  norwayWMS: IWMSList|null
 }
 
 export const useWMSGeoNorgeStore = defineStore({
@@ -21,6 +23,7 @@ export const useWMSGeoNorgeStore = defineStore({
   state: (): IWMSGeoNorge => ({
     viewer: inject<Viewer>(MapsType.Viewer)!,
     layers: new Map<string, IWMS[]>(),
+    norwayWMS: null,
     imageryProviders: new Map<string, ImageryLayer>(),
     loading: [],
   }),
@@ -29,11 +32,24 @@ export const useWMSGeoNorgeStore = defineStore({
     getLoading: state => (category: string) => state.loading.includes(category),
   },
   actions: {
+    async getGeoNorge() {
+      try {
+        const { data } = await axios.get(`${__API_URL__}/puppeteer/get-geonorge-wms`)
+        if (!data) throw new Error('File not found')
+        this.norwayWMS = data
+      } catch (err) {
+        console.error(err)
+      } finally {
+        
+      }
+    },
+
     async fetchWMSLayers(category: string) {
       if (this.layers.has(category)) return
-
       this.loading.push(category)
+
       try {
+        if (!this.norwayWMS) await this.getGeoNorge()
         var categoryLayers: IWMS[] = []
         const geonorge = NorwayWMS.servers[category]
         if (!geonorge) throw new Error('Empty servers')
