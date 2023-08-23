@@ -1,5 +1,5 @@
 import { PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { PointCloudOctree, Potree } from '@pnext/three-loader'
+import { PointCloudOctree, Potree,  } from '@pnext/three-loader'
 import { OrbitControls } from '@three-ts/orbit-controls'
 import { Camera } from 'cesium'
 
@@ -61,23 +61,25 @@ export class PotreeViewer {
       })
   }
 
+  async loadCompressed(fileName: string, baseUrl: string): Promise<PointCloudOctree> {
+    return this.potree
+      .loadPointCloud(fileName, url => `${baseUrl}${url}`)
+      .then((pco: PointCloudOctree) => {
+        console.log(pco);
+        
+        this.scene.add(pco)
+        this.pointClouds.push(pco)
+
+        return pco
+      })
+  }
+
   update(_dt: number): void {
     this.potree.updatePointClouds(this.pointClouds, this.camera, this.renderer)
   }
 
   synchroCamera(cesiumCamera: Camera): void {
     cesiumCamera.changed.addEventListener(() => {
-      // const matrix4 = Object.entries(cesiumCamera.viewMatrix).map(
-      //   ([_s, n]) => n
-      // )
-      // this.camera.matrix.fromArray(matrix4)
-      // this.camera.position.copy(
-      //   new Vector3(
-      //     cesiumCamera.position.x,
-      //     cesiumCamera.position.y,
-      //     cesiumCamera.position.z
-      //   )
-      // )
       this.camera.position.set(
         cesiumCamera.position.x,
         cesiumCamera.position.y,
