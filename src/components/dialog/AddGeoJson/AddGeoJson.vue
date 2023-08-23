@@ -108,23 +108,23 @@ const showError = (msg: string) => {
   error.value = msg
 }
 
-const submitForm = (form: FormInstance | undefined) => {
-  if (!form) return
-  form.validate(async isValid => {
-    console.log({ isValid })
-    if (isValid) {
-      await load({
-        alias: ruleForm.alias,
-        url: await json.value,
-        options: { clampToGround: true },
-      })
-      toggleSourceVisibility(ruleForm.alias)
-      emits('close')
-    } else {
-      showError('dupa')
-      return false
-    }
+const submitForm = async () => {
+  // if (!form) return
+  // form.validate(async isValid => {
+  //   console.log({ isValid })
+  //   if (isValid) {
+  //   } else {
+  //     showError('dupa')
+  //     return false
+  //   }
+  // })
+  await load({
+    alias: ruleForm.alias,
+    url: await json.value,
+    options: { clampToGround: true },
   })
+  toggleSourceVisibility(ruleForm.alias)
+  emits('close')
   // formEl.value.validate(async valid => {
   //   if (valid) {
   //     try {
