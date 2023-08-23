@@ -1,8 +1,6 @@
 import { MapsType } from '@enum/MapType'
-import { Color, Viewer } from 'cesium'
-import { inject } from 'vue'
-import { GeoJsonDataSource } from 'cesium'
-
+import { DataSource, GeoJsonDataSource, Viewer } from 'cesium'
+import { inject, ref } from 'vue'
 export interface ISource {
   alias: string
   url: string
@@ -10,74 +8,65 @@ export interface ISource {
   dynamic?: (dataSource: GeoJsonDataSource) => void
 }
 
-const sources = new Map<string, GeoJsonDataSource>()
+type SourceEntry = [string, DataSource];
+
+const sources = ref<SourceEntry[]>([])
+
+const isInArray = (index: number) => index > -1;
+const findSourceIndex = (alias: string) => sources.value.findIndex((el) => el[0] === alias)
+
+const addSource = (alias: string, dataSource: GeoJsonDataSource) => {
+  if (getSource(alias)) {
+    throw new Error('alias already in use')
+  }
+  sources.value.push([alias, dataSource])
+}
+
+const getSource = (alias: string) => {
+  const index = findSourceIndex(alias)
+
+  return isInArray(index) ? sources.value.at(index)![1] : null
+}
 
 export default function useGeoJSONLoader() {
   const viewer = inject<Viewer>(MapsType.Viewer)!
 
-  const load = async ({ alias, url, options, dynamic = () => {} }: ISource) => {
-    try {
-      const dataSource = await GeoJsonDataSource.load(url, options)
-      dataSource.show = false
+  const getSources = () => sources.value
+  const getSize = (): number => sources.value.length
 
-      if (dynamic) {
-        try {
-          dynamic(dataSource)
-        } catch (err) {
-          console.error(err)
-        }
-      }
-
-      viewer.dataSources.add(dataSource)
-      sources.set(alias, dataSource)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const getSources = () => Array.from(sources.keys())
-  const size = (): number => sources.size
-
-  const visibleSource = (alias: string) => {
-    if (sources.has(alias)) {
-      const source = sources.get(alias)!
+  const toggleSourceVisibility = (alias: string) => {
+    const source = getSource(alias)
+    if (source)
       source.show = !source.show
+  }
+
+  const deleteSource = (alias: string) => {
+    const index = findSourceIndex(alias);
+    if (isInArray(index))
+      sources.value.splice(index, 1)
+  }
+
+  const load = async ({
+    alias,
+    url,
+    options,
+    dynamic = () => { }
+  }: ISource) => {
+    const dataSource = await GeoJsonDataSource.load(url, options)
+    dataSource.show = false
+
+    if (dynamic) {
+      dynamic(dataSource)
     }
+    addSource(alias, dataSource)
+    await viewer.dataSources.add(dataSource)
   }
-
-  const init = async () => {
-    await load({
-      alias: 'Poland province',
-      url: './src/data/poland.geojson',
-      dynamic: (dataSource: GeoJsonDataSource) => {
-        dataSource.entities.values.map(entity => {
-          if (!entity.polygon) return
-          //@ts-ignore
-          entity.polygon.height! = 2200
-          const code = parseInt(entity?.properties?.code._value)
-          if (code < 5) {
-            //@ts-ignore
-            entity.polygon.material = new Color(code * 10, 0.3, 0.3, 0.4)
-          }
-          if (code < 10 && code > 5) {
-            //@ts-ignore
-            entity.polygon.material = new Color(1, 0.3, code * 10, 0.4)
-          }
-          if (code < 20 && code > 10) {
-            //@ts-ignore
-            entity.polygon.material = new Color(1, code * 10, 0.3, 0.4)
-          }
-        })
-        viewer.zoomTo(dataSource)
-      },
-    })
-  }
-
-  init()
 
   return {
     getSources,
-    visibleSource,
-    size,
+    getSize,
+    toggleSourceVisibility,
+    deleteSource,
+    load,
   }
 }
