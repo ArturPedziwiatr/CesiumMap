@@ -1,74 +1,60 @@
 <template>
-  <el-form ref="formEl" @submit.prevent :model="ruleForm" :rules="rules">
-    <label> Name of your layer: </label>
-    <el-input
-      type="text"
-      v-model="ruleForm.alias"
-      class="mt-2"
-      :rules="[
-        {
-          required: true,
-          message: 'alias is required',
-        },
-      ]"
-    ></el-input>
+  <el-form ref="formEl" @submit.prevent>
+    <form-input
+      label="Name of your layer:"
+      :error="v?.alias?.$errors[0]?.$message || ''"
+    >
+      <el-input type="text" v-model="v.alias.$model" class="mt-2"> </el-input>
+    </form-input>
     <el-tabs v-model="currentUploadOption" type="card" class="mt-4">
       <el-tab-pane label="FILE" name="file">
-        <UploadFile v-model="ruleForm.file" />
+        <form-input
+          label="Choose a file to upload"
+          :error="v?.file?.$errors[0]?.$message || ''"
+        >
+          <UploadFile v-model="v.file.$model" />
+        </form-input>
       </el-tab-pane>
       <el-tab-pane label="JSON" name="text">
-        <el-input
-          type="textarea"
-          :rows="6"
-          v-model="ruleForm.text"
-          :rules="[
-            {
-              required: true,
-              message: 'This field is required.',
-            },
-          ]"
-        />
+        <form-input
+          label="Enter your GEOJSON data:"
+          :error="v?.text?.$errors[0]?.$message || ''"
+        >
+          <el-input type="textarea" :rows="6" v-model="v.text.$model" />
+        </form-input>
       </el-tab-pane>
     </el-tabs>
-    <div v-if="error">
-      <p class="text--red">
-        {{ error }}
-      </p>
-    </div>
-    <el-button class="mt-2 pl-12" @click="submitForm(formEl)">Send</el-button>
+    <el-button class="mt-2 pl-12" @click="submitForm">Send</el-button>
   </el-form>
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import useGeoJSONLoader from '@/composables/geojson/GeoJSONLoader'
 import axios from 'axios'
-import { computed, reactive, ref } from 'vue'
 import UploadFile from './UploadFile.vue'
+import { useVuelidate } from '@vuelidate/core'
+import FormInput from '@/components/input/FormInput.vue'
+import { required, requiredIf } from '@vuelidate/validators'
 import type { FormInstance } from 'element-plus'
 
 const formEl = ref<FormInstance>()
-const error = ref()
 const currentUploadOption = ref<'file' | 'text'>('file')
 
 const { load, toggleSourceVisibility } = useGeoJSONLoader()
 const emits = defineEmits(['close'])
 
-const ruleForm = reactive<{ alias: string; text: string; file?: File }>({
-  alias: '',
-  text: '',
-  file: undefined,
-})
+const alias = ref('')
+const text = ref('')
+const file = ref<'' | File>('')
 
-const validateFile = (rule: any, value: any, callback: any) => {
-  if (!ruleForm.file) {
-    return false
-    // showError('You need to specify a file')
-  }
-}
+const rules = computed(() => ({
+  alias: { required },
+  text: { isTextInput: requiredIf(() => currentUploadOption.value === 'text') },
+  file: { isFileInput: requiredIf(() => currentUploadOption.value === 'file') },
+}))
 
-const rules = reactive({
-  file: [{ validator: validateFile, trigger: 'change' }],
-})
+const v = useVuelidate(rules, { alias, text, file })
 
 const uploadFile = (url: string, file: File) => {
   const formData = new FormData()
@@ -97,57 +83,20 @@ const readFileContentAsync = (f: File): Promise<string> =>
 
 const json = computed(async () => {
   if (currentUploadOption.value === 'text') {
-    return JSON.parse(ruleForm.text)
+    return JSON.parse(text.value)
   }
-  return ruleForm.file
-    ? JSON.parse(await readFileContentAsync(ruleForm.file))
-    : ''
+  return file.value ? JSON.parse(await readFileContentAsync(file.value)) : ''
 })
 
-const showError = (msg: string) => {
-  error.value = msg
-}
+const submitForm = async () => {
+  if (!(await v.value.$validate())) return
 
-const submitForm = (form: FormInstance | undefined) => {
-  if (!form) return
-  form.validate(async isValid => {
-    console.log({ isValid })
-    if (isValid) {
-      await load({
-        alias: ruleForm.alias,
-        url: await json.value,
-        options: { clampToGround: true },
-      })
-      toggleSourceVisibility(ruleForm.alias)
-      emits('close')
-    } else {
-      showError('dupa')
-      return false
-    }
+  await load({
+    alias: alias.value,
+    url: await json.value,
+    options: { clampToGround: true },
   })
-  // formEl.value.validate(async valid => {
-  //   if (valid) {
-  //     try {
-  //     } catch (e) {
-  //       if (e instanceof Error) showError(e.message)
-  //     }
-  //   } else {
-  //     console.log('error submit!')
-  //     return false
-  //   }
-  // })
-  // load(json.value, { clampToGround: true })
-  // await viewer.dataSources.add(
-  //   GeoJsonDataSource.load(json.value, { clampToGround: true })
-  // )
-
-  // if (currentUploadOption.value === 'file')
-  //   return () => uploadFile('http://localhost:8080/v1/geojson/file', file.value)
-  // else
-  //   return () =>
-  //     uploadFile(
-  //       'http://localhost:8080/v1/geojson/file',
-  //       createJsonFile(text.value)
-  //     )
+  toggleSourceVisibility(alias.value)
+  emits('close')
 }
 </script>

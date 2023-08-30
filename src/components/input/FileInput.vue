@@ -17,7 +17,6 @@ if (fileInput.value) emit('upload', fileInput.value)
 
 <template>
   <div class="col">
-    <label class="mt-2">Choose a file to upload:</label>
     <input
       type="file"
       ref="fileInput"
