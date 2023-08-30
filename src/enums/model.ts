@@ -3,3 +3,13 @@ export enum Model {
   BUILDING_ZONE = 1908242,
   BUILDING_BUILD = 1908361,
 }
+
+export const ModelNorway = [
+  2216882,
+  2216881,
+  2216879,
+  2216878,
+  2216877,
+  2216834,
+  2216416,
+]

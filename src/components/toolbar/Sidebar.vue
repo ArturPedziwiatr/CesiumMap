@@ -11,13 +11,15 @@ import useTerrains from '@function/terrain/terrain'
 import AuthSection from '@component/auth/AuthSection.vue'
 import ButtonCustom from '@component/buttons/ButtonCustom.vue'
 import InstructionsComponent from '@component/toolbar/additional/InstructionsComponent.vue'
+import usePointCloudIon from '@function/pointCloudFromIon/pointCloudIon'
 
 const { isAuthenticated, user } = useAuth0(),
   sidebar = ref<HTMLElement>(),
   toggle = ref<HTMLElement>(),
   actions = useCesiumPresentation(),
   tileset = use3DTileset(),
-  maps = useTerrains()
+  maps = useTerrains(),
+  pc = usePointCloudIon().generatePointCloud()
 
 const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
 

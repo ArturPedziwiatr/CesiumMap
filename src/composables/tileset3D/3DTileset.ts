@@ -73,7 +73,7 @@ export default function use3DTileset() {
     loaded.value = true
   }
 
-  init()
+  if (false) init()
 
   return {
     getTileset,

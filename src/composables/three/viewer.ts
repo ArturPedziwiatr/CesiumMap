@@ -66,15 +66,6 @@ export class PotreeViewer {
     this.potree.updatePointClouds(this.pointClouds, this.camera, this.renderer);
   }
 
-  synchroCamera(cesiumCamera: Camera): void {
-    const potreeCamera = this.camera;
-    cesiumCamera.changed.addEventListener(() => {
-      var cesiumView = cesiumCamera.viewMatrix;
-      console.log({ potreeCamera, cesiumView });
-      
-    })
-  }
-
   render(): void {
     this.renderer.clear();
     this.renderer.render(this.scene, this.camera);

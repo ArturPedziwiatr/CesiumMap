@@ -18,20 +18,6 @@ const layersActive = ref(false)
 const viewer = useViewer().getCesium()
 
 onMounted(() => {
-  // viewer.value = new Viewer('cesiumMap', {
-  //   homeButton: false,
-  //   baseLayerPicker: false,
-  //   infoBox: true,
-  //   fullscreenButton: false,
-  //   geocoder: false,
-  //   useBrowserRecommendedResolution: false,
-  //   skyAtmosphere: false,
-  //   terrain: Terrain.fromWorldTerrain({
-  //     requestWaterMask: true,
-  //     requestVertexNormals: true,
-  //   }),
-  // })
-
   viewerConstruct.value = !viewerConstruct.value
   navigator.geolocation.getCurrentPosition(
     (position: GeolocationPosition) => {
@@ -63,7 +49,7 @@ const setActive = (value: boolean) => (layersActive.value = value)
 
 <template>
   <div class="container">
-    <SplitScreen :split="true">
+    <SplitScreen :split="!true">
       <template #front>
         <div id="cesiumMap" class="container--map"></div>
       </template>

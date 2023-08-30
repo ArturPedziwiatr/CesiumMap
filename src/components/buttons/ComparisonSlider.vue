@@ -5,8 +5,6 @@ const sliderInput = ref<HTMLInputElement>()
 const firstView = ref<HTMLElement>()
 const dragLine = ref<HTMLElement>()
 const onChange = () => {
-  console.log(dragLine.value)
-  
   if (!dragLine.value || !firstView.value || !sliderInput.value) return
   dragLine.value.style.left = `${sliderInput.value.value}%`
   firstView.value.style.width = `${sliderInput.value.value}%`
