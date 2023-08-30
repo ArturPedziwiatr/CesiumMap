@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AuthSection from '@component/auth/AuthSection.vue'
 import ButtonCustom from '@component/buttons/ButtonCustom.vue'
-import useDynamicLayers from '@function/layers/layers'
 import { ref } from 'vue'
 import AddWMSDialog from '@component/dialog/AddWMSDialog.vue'
 import AddGeoJsonDialog from '@component/dialog/AddGeoJson/AddGeoJson.vue'
@@ -9,12 +8,14 @@ import { ElDialog } from 'element-plus'
 import ButtonList from '@component/buttons/ButtonList.vue'
 import WMSFromCategory from '@component/wms/WMSFromCategory.vue'
 import LoadedGeoJson from '@component/toolbar/LoadedGeoJson.vue'
+import { useWMSGeoNorgeStore } from '@store/WMSGeoNorge.store'
 
-const dynamicLayres = useDynamicLayers(),
+const geoNorgeStore = useWMSGeoNorgeStore(),
   dialogVisible = ref(false),
   component = ref(),
   title = ref('')
 
+geoNorgeStore.fetchGeoNorge()
 const openDialog = (arg1: any, arg2: string) => {
   component.value = arg1
   title.value = arg2
@@ -30,10 +31,12 @@ defineEmits(['close'])
       <p>Layers</p>
       <Icon :icon="['fas', 'xmark']" @click="$emit('close', false)" />
     </div>
-    <div v-for="category in dynamicLayres.getWMSGeonorge()" :key="category">
-      <ButtonList :text="category" :key="category" v-slot="{ active }">
-        <WMSFromCategory :category="category" v-if="active" />
-      </ButtonList>
+    <div class="categoris--box">
+      <div v-for="category in geoNorgeStore.getCategories" :key="category">
+        <ButtonList :text="category" :key="category" v-slot="{ active }">
+          <WMSFromCategory :category="category" v-if="active" />
+        </ButtonList>
+      </div>
     </div>
     <ButtonCustom
       @on-click="openDialog(AddWMSDialog, 'Add WMS layer')"
@@ -43,7 +46,10 @@ defineEmits(['close'])
       <p>Add WMS layer</p>
     </ButtonCustom>
 
-    <ButtonCustom @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')" :check="false">
+    <ButtonCustom
+      @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')"
+      :check="false"
+    >
       <Icon :icon="['fas', 'plus']" />
       <p>add geojson</p>
     </ButtonCustom>
@@ -57,6 +63,12 @@ defineEmits(['close'])
 </template>
 
 <style scoped lang="scss">
+.categoris--box {
+  margin-top: 12px;
+  max-height: 85%;
+  overflow-y: auto;
+}
+
 .box {
   height: 200px;
   width: auto;

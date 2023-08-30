@@ -1,15 +1,12 @@
 import { defineStore } from 'pinia'
 import { WmsEndpoint, WmsLayerSummary } from '@camptocamp/ogc-client'
-import { IWMSList, NorwayWMS } from '@/data/WMSList'
 import { ImageryLayer, Viewer, WebMapServiceImageryProvider } from 'cesium'
 import { inject } from 'vue'
 import { MapsType } from '@enum/MapType'
 import axios from 'axios'
+import { IWMS, IWMSList } from '@/interface'
 
-interface IWMS {
-  readonly url: string
-  readonly layer: string
-}
+
 interface IWMSGeoNorge {
   viewer: Viewer
   layers: Map<string, IWMS[]>
@@ -29,14 +26,17 @@ export const useWMSGeoNorgeStore = defineStore({
   }),
   getters: {
     getLayers: state => (category: string) => state.layers.get(category),
+    getCategories: (state) => state.norwayWMS ? state.norwayWMS.categories : null,
     getLoading: state => (category: string) => state.loading.includes(category),
   },
   actions: {
-    async getGeoNorge() {
+    async fetchGeoNorge() {
       try {
-        const { data } = await axios.get(`${__API_URL__}/puppeteer/get-geonorge-wms`)
-        if (!data) throw new Error('File not found')
-        this.norwayWMS = data
+        if (!this.norwayWMS) {
+          const { data } = await axios.get(`${__API_URL__}/wmsdownload/geonorge`)
+          if (!data) throw new Error('File not found')
+          this.norwayWMS = data
+        }
       } catch (err) {
         console.error(err)
       } finally {
@@ -49,9 +49,9 @@ export const useWMSGeoNorgeStore = defineStore({
       this.loading.push(category)
 
       try {
-        if (!this.norwayWMS) await this.getGeoNorge()
+        if (!this.norwayWMS) await this.fetchGeoNorge()
         var categoryLayers: IWMS[] = []
-        const geonorge = NorwayWMS.servers[category]
+        const geonorge = this.norwayWMS?.servers[category]
         if (!geonorge) throw new Error('Empty servers')
 
         for await (const url of geonorge) {
@@ -63,6 +63,7 @@ export const useWMSGeoNorgeStore = defineStore({
           )
           categoryLayers = [...categoryLayers, ...result]
         }
+
         this.layers.set(category, categoryLayers)
       } catch (err) {
         console.error(err)
