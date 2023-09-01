@@ -9,7 +9,6 @@ onMounted(async () => {
   useViewer().addDraco()
   if (threeCanva.value && viewer.value) {
     viewer.value.initialize(threeCanva.value)
-    viewer.value.loadBetter();
     // viewer.value
     //   .load('cloud.js', 'http://localhost:5000/las1/')
     //   .then(pco => {
