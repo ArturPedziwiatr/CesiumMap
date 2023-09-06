@@ -49,6 +49,7 @@ export default function usePointCloud() {
         if (!pointCloudCollection.has(assetId)) {
           pointCloudCollection.set(assetId, pointSquare)
           viewer.scene.primitives.add(pointSquare)
+          if (pointSquare) await viewer.zoomTo(pointSquare)
         }
       }
     } catch (er) {
@@ -89,6 +90,8 @@ export default function usePointCloud() {
     })
   }
 
+  generatePL('tmp', ['result2'])
+  
   return {
     generateNor,
     generatePL,

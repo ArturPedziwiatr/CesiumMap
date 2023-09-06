@@ -1260,11 +1260,6 @@ ktx-parse@^0.5.0:
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.5.0.tgz#b4025bbc73ac5386ac37e869de455eab915261bc"
   integrity sha512-5IZrv5s1byUeDTIee1jjJQBiD5LPDB0w9pJJ0oT9BCKKJf16Tuj123vm1Ps0GOHSHmeWPgKM0zuViCVuTRpqaA==
 
-las-js@^3.3.2:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/las-js/-/las-js-3.3.2.tgz#90a752c3bee14874ce5af2d1d487a46fc1eee53c"
-  integrity sha512-bWsLQv3Lh+xzFqAtpJcrBvfAEBlIsBVUOznxfCIV64wFQtwRA/iKYgylr/JCq748DQzcNBFOPXa0feJPDz/rpg==
-
 lerc@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/lerc/-/lerc-2.0.0.tgz#82feca29ea6202799a815ca38f7b66a370e8cf9b"
