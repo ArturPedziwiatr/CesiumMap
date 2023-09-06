@@ -11,13 +11,15 @@ import useTerrains from '@function/terrain/terrain'
 import AuthSection from '@component/auth/AuthSection.vue'
 import ButtonCustom from '@component/buttons/ButtonCustom.vue'
 import InstructionsComponent from '@component/toolbar/additional/InstructionsComponent.vue'
+import usePointCloud from '@function/pointCloudFromIon/pointCloudIon'
 
 const { isAuthenticated, user } = useAuth0(),
   sidebar = ref<HTMLElement>(),
   toggle = ref<HTMLElement>(),
   actions = useCesiumPresentation(),
   tileset = use3DTileset(),
-  maps = useTerrains()
+  maps = useTerrains(),
+  pc = usePointCloud()
 
 const getInitials = (text: string | null | undefined) => (text ? text[0] : '')
 
@@ -60,6 +62,10 @@ const expanded = () => {
 
     <ButtonSearch class="search" />
     <div class="menu">
+      <ButtonCustom class="primary" @on-click="pc.initLidarLayer()">
+        <Icon :icon="['fas', 'map-pin']" />
+        <p>Lidar</p>
+      </ButtonCustom>
       <ButtonCustom class="primary" @on-click="actions.bumpToHome()">
         <Icon :icon="['fas', 'house']" />
         <p>View Home</p>

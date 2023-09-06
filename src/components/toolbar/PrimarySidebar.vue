@@ -7,18 +7,24 @@ import useTerrains from '@function/terrain/terrain'
 import AuthSection from '@component/auth/AuthSection.vue'
 import ButtonCustom from '@component/buttons/ButtonCustom.vue'
 import useSidebar, { SidebarsType } from '@function/sidebar/sidebar'
+import usePointCloud from '@function/pointCloudFromIon/pointCloudIon'
 
 const actions = useCesiumPresentation(),
   tileset = use3DTileset(),
   maps = useTerrains(),
-  menu = useSidebar()
+  menu = useSidebar(),
+  pointCloud = usePointCloud()
 </script>
 
 <template>
   <div>
+    <ButtonCustom class="primary" @on-click="pointCloud.initLidarLayer()">
+      <Icon :icon="['fas', 'house']" />
+      <p>Lidar</p>
+    </ButtonCustom>
     <ButtonCustom class="primary" @on-click="actions.bumpToHome()">
       <Icon :icon="['fas', 'house']" />
-      <p>View Home</p>
+      <p>View Home2</p>
     </ButtonCustom>
     <ButtonList icon="scroll" text="Presentation">
       <ButtonCustom @on-click="actions.importFlyingData()"

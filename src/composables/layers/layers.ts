@@ -14,7 +14,7 @@ export default function useDynamicLayers() {
     loading = ref(false),
     layers = ref<ILayerSet[]>([]),
     size = ref(layersBox.value.size),
-    url = ref('https://wms.geonorge.no/skwms1/wms.adm_enheter_historisk?'),
+    url = ref(''),
     refresToken = ref(''),
     error = ref('')
 
@@ -26,7 +26,6 @@ export default function useDynamicLayers() {
       loading.value = true
       const endpoint = await new WmsEndpoint(input).isReady()
       reduceLayers(endpoint.getLayers())
-      console.log(endpoint.getServiceInfo())
 
       loading.value = false
       refresToken.value = uniqueId()
@@ -38,8 +37,6 @@ export default function useDynamicLayers() {
 
   const addLayer = async (input: string, aliasWMS: string) => {
     try {
-      console.log(input)
-
       if (!layersBox.value.has(aliasWMS)) {
         const layer = new ImageryLayer(
           new WebMapServiceImageryProvider({

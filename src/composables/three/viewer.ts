@@ -1,8 +1,9 @@
 import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { PointCloudOctree, Potree } from "@pnext/three-loader";
 import { OrbitControls } from '@three-ts/orbit-controls';
+import { Camera } from 'cesium';
 
-export class Viewer {
+export class PotreeViewer {
   private targetEl: HTMLElement | undefined;
   private renderer = new WebGLRenderer();
   private scene = new Scene();
@@ -12,6 +13,7 @@ export class Viewer {
   private pointClouds: PointCloudOctree[] = [];
   private prevTime: number | undefined;
   private reqAnimationFrameHandle: number | undefined;
+  
   initialize(targetEl: HTMLElement): void {
     if (this.targetEl || !targetEl) {
       return;

@@ -18,6 +18,7 @@ export default function useTerrains() {
           }),
           {}
         )
+        
         map.show = false
         viewer.imageryLayers.add(map)
         mapBox.set(alias, map)
@@ -40,7 +41,7 @@ export default function useTerrains() {
     addMapBox({ alias: 'MapBox Dark', styleId: 'dark-v11' })
   }
 
-  init()
+  if (false) init()
 
   return {
     size,
