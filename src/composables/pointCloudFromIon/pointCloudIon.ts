@@ -31,7 +31,7 @@ export default function usePointCloud() {
     }
   }
 
-  const generatePL = async (module: string, pointCloudIds: string[]) => {
+  const generate = async (module: string, pointCloudIds: string[]) => {
     try {
       if (!viewer) throw new Error('Empty viewer')
       for await (const assetId of pointCloudIds) {
@@ -49,7 +49,6 @@ export default function usePointCloud() {
         if (!pointCloudCollection.has(assetId)) {
           pointCloudCollection.set(assetId, pointSquare)
           viewer.scene.primitives.add(pointSquare)
-          if (pointSquare) await viewer.zoomTo(pointSquare)
         }
       }
     } catch (er) {
@@ -73,7 +72,7 @@ export default function usePointCloud() {
         heightReference: 1
       },
       properties: {
-        onClick: () => generatePL('pl-2021-lidar', pointCloudIdsPL21)
+        onClick: () => generate('pl-2021-lidar', pointCloudIdsPL21)
       }
     })
     viewer.entities.add({
@@ -85,16 +84,16 @@ export default function usePointCloud() {
         heightReference: 1
       },
       properties: {
-        onClick: () => generatePL('baerum-2012-lidar', pointCloudIdsBaerum12)
+        onClick: () => generate('baerum-2012-lidar', pointCloudIdsBaerum12)
       }
     })
   }
 
-  generatePL('tmp', ['result2'])
+  //generate('tmp', ['result2'])
   
   return {
     generateNor,
-    generatePL,
+    generate,
     initLidarLayer
   }
 }

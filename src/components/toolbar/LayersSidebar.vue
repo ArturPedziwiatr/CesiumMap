@@ -45,7 +45,7 @@ defineEmits(['close'])
 
     <ButtonCustom @on-click="openDialog(AddGeoJsonDialog, 'Add GeoJSON')" :check="false">
       <Icon :icon="['fas', 'plus']" />
-      <p>add geojson</p>
+      <p>Add geojson</p>
     </ButtonCustom>
 
     <LoadedGeoJson></LoadedGeoJson>

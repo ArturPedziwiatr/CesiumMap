@@ -31,7 +31,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import useGeoJSONLoader from '@/composables/geojson/GeoJSONLoader'
-import axios from 'axios'
 import UploadFile from './UploadFile.vue'
 import { useVuelidate } from '@vuelidate/core'
 import FormInput from '@/components/input/FormInput.vue'
@@ -56,15 +55,16 @@ const rules = computed(() => ({
 
 const v = useVuelidate(rules, { alias, text, file })
 
-const uploadFile = (url: string, file: File) => {
-  const formData = new FormData()
-  formData.append('file', file)
-  axios.post(url, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-}
+// TODO: WIP
+// const uploadFile = (url: string, file: File) => {
+//   const formData = new FormData()
+//   formData.append('file', file)
+//   axios.post(url, formData, {
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   })
+// }
 
 const readFileContentAsync = (f: File): Promise<string> =>
   new Promise(resolve => {
